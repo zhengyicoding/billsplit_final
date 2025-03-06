@@ -4,8 +4,10 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import "dotenv/config";
 
-import indexRouter from "./routes/index.js";
+import friendsRouter from "./routes/friends.js";
+import expensesRouter from "./routes/expenses.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "frontend/dist")));
 
-app.use("/api/projects", indexRouter);
+app.use("/api/friends", friendsRouter);
+app.use("/api/expenses", expensesRouter);
 
 export default app;
