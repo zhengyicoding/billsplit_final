@@ -1,0 +1,9 @@
+.expenses-list-container {
+    margin-top: 20px;
+}
+
+.expenses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

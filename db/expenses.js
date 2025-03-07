@@ -33,13 +33,109 @@ function ExpensesCol() {
       console.error(`Error creating indexes for ${COL_NAME}:`, err)
     );
 
-  // Get all expenses, sorted by date (newest first)
-  self.getAllExpenses = async () => {
+  // Get all expenses with pagination, sorting, and filtering
+  self.getAllExpenses = async (options = {}) => {
     return withCollection(COL_NAME, async (collection) => {
-      return collection.find().sort({ date: -1, createdAt: -1 }).toArray();
+      const {
+        page = 1,
+        limit = 10,
+        sortBy = "date",
+        sortDirection = "desc",
+        search = "",
+        friendId = null,
+        settled = null,
+        dateFrom = null,
+        dateTo = null,
+      } = options;
+
+      // Build query
+      let query = {};
+
+      // Add search functionality if provided
+      if (search) {
+        query.$or = [
+          { description: { $regex: search, $options: "i" } },
+          { friendName: { $regex: search, $options: "i" } },
+        ];
+      }
+
+      // Add friend filter
+      if (friendId) {
+        query.friendId = friendId;
+      }
+
+      // Add settled status filter (convert string 'true'/'false' to boolean)
+      if (settled !== null) {
+        // Your frontend is sending 'true' for settled and 'false' for unsettled
+        query.settled = settled === "true";
+      }
+
+      if (dateFrom || dateTo) {
+        // Convert the incoming dates to YYYY-MM-DD format
+        const fromDateStr = dateFrom
+          ? new Date(dateFrom).toISOString().split("T")[0]
+          : null;
+        const toDateStr = dateTo
+          ? new Date(dateTo).toISOString().split("T")[0]
+          : null;
+
+        console.log(
+          "Looking for dates between:",
+          fromDateStr,
+          "and",
+          toDateStr
+        );
+
+        // Use a simpler string-based comparison
+        if (fromDateStr && toDateStr) {
+          // Create a raw MongoDB query that does string comparison on just the date portion
+          query.date = {
+            $gte: fromDateStr, // This will match "2025-03-07" at the beginning of the string
+            $lte: toDateStr + "T23:59:59.999Z", // This ensures we get all entries on the end date
+          };
+        } else if (fromDateStr) {
+          query.date = { $gte: fromDateStr };
+        } else if (toDateStr) {
+          query.date = { $lte: toDateStr + "T23:59:59.999Z" };
+        }
+      }
+
+      console.log("MongoDB Query:", JSON.stringify(query));
+
+      // Calculate skip value for pagination
+      const skip = (parseInt(page) - 1) * parseInt(limit);
+
+      // Build sort object
+      const sort = {};
+      sort[sortBy] = sortDirection === "asc" ? 1 : -1;
+
+      // Add secondary sort by createdAt for consistency
+      if (sortBy !== "createdAt") {
+        sort.createdAt = -1;
+      }
+
+      // Execute query with pagination
+      const expenses = await collection
+        .find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(parseInt(limit))
+        .toArray();
+
+      // Get total count for pagination
+      const total = await collection.countDocuments(query);
+
+      return {
+        expenses,
+        pagination: {
+          total,
+          page: parseInt(page),
+          limit: parseInt(limit),
+          pages: Math.ceil(total / parseInt(limit)),
+        },
+      };
     });
   };
-
   // Get expenses for a specific friend
   self.getExpensesByFriend = async (friendId) => {
     return withCollection(COL_NAME, async (collection) => {
@@ -128,10 +224,15 @@ function ExpensesCol() {
         friendAmount = totalAmount / 2;
       }
 
+      // Ensure date is in standardized ISO format
+      const formattedDate = expenseData.date
+        ? new Date(expenseData.date).toISOString()
+        : new Date().toISOString();
+
       const expense = {
         description: expenseData.description,
         amount: totalAmount,
-        date: new Date(expenseData.date) || new Date(),
+        date: formattedDate, // Store as standardized ISO string
         friendId: expenseData.friendId,
         friendName: friend.name,
         splitMethod: expenseData.splitMethod || "equally",
@@ -139,7 +240,7 @@ function ExpensesCol() {
         friendAmount: friendAmount,
         paidBy: expenseData.paidBy || "you",
         settled: false,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(), // Store as standardized ISO string
       };
 
       // Calculate balance adjustment
@@ -202,7 +303,7 @@ function ExpensesCol() {
             ? parseFloat(updateData.amount)
             : originalExpense.amount,
         date: updateData.date
-          ? new Date(updateData.date)
+          ? new Date(updateData.date).toISOString()
           : originalExpense.date,
         splitMethod: updateData.splitMethod || originalExpense.splitMethod,
         paidBy: updateData.paidBy || originalExpense.paidBy,
@@ -344,7 +445,7 @@ function ExpensesCol() {
     return withCollection(COL_NAME, async (collection) => {
       const result = await collection.updateMany(
         { friendId: friendId, settled: false },
-        { $set: { settled: true, settledAt: new Date() } }
+        { $set: { settled: true, settledAt: new Date().toISOString() } }
       );
 
       // Reset friend's balance to zero

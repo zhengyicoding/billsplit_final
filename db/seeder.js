@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
@@ -110,9 +110,9 @@ async function seedDatabase() {
     for (const expense of normalizedExpenses) {
       if (!friendsMap.has(expense.friendId)) {
         friendsMap.set(expense.friendId, {
-          _id: expense.friendId,
+          _id: new ObjectId(expense.friendId),
           name: expense.friendName,
-          avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
+          avatar: `https://i.pravatar.cc/150?u=${expense.friendId}`,
           balance: 0,
           expenses: [],
         });
@@ -166,11 +166,11 @@ async function seedDatabase() {
 function generateSampleData(count = 1000) {
   // Create some sample friends
   const friends = [
-    { id: "friend1", name: "Alex" },
-    { id: "friend2", name: "Jamie" },
-    { id: "friend3", name: "Taylor" },
-    { id: "friend4", name: "Morgan" },
-    { id: "friend5", name: "Jordan" },
+    { id: new ObjectId(), name: "Alex" },
+    { id: new ObjectId(), name: "Jamie" },
+    { id: new ObjectId(), name: "Taylor" },
+    { id: new ObjectId(), name: "Morgan" },
+    { id: new ObjectId(), name: "Jordan" },
   ];
 
   // Expense descriptions

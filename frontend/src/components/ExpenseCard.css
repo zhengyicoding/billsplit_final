@@ -1,0 +1,115 @@
+.expense-card {
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.expense-card:hover {
+    transform: translateY(-2px);
+}
+
+.expense-card.settled {
+    opacity: 0.7;
+}
+
+.expense-summary {
+    padding: 16px;
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.expense-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.expense-amount {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.expense-meta {
+    display: flex;
+    flex-wrap: wrap;
+    color: #666;
+    font-size: 14px;
+    gap: 12px;
+}
+
+.expense-date,
+.expense-friend,
+.expense-paid-by {
+    margin-right: 12px;
+}
+
+.settled-badge {
+    display: inline-block;
+    background-color: #e8f5e9;
+    color: #388e3c;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.expense-details {
+    padding: 16px;
+    border-top: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.expense-split-info {
+    margin-bottom: 16px;
+}
+
+.split-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.balance-detail {
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.balance-detail.positive {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.balance-detail.negative {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.settled-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #e8f5e9;
+    color: #388e3c;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.expense-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}

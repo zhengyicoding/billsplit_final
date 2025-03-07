@@ -1,0 +1,18 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.pagination-number {
+    min-width: 40px;
+    text-align: center;
+}
+
+.pagination-ellipsis {
+    color: #666;
+    margin: 0 4px;
+}

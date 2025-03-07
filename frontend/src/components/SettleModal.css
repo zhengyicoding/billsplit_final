@@ -1,0 +1,39 @@
+.settle-modal-content {
+    padding: 16px 0;
+}
+
+.balance-summary {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.balance-summary .positive {
+    color: #4CAF50;
+}
+
+.balance-summary .negative {
+    color: #F44336;
+}
+
+.settlement-info {
+    margin-bottom: 16px;
+}
+
+.warning {
+    background-color: #fff9e6;
+    color: #f57c00;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid #f57c00;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}

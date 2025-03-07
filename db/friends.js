@@ -49,19 +49,31 @@ function FriendsCol() {
   // Create a new friend
   self.createFriend = async (friendData) => {
     return withCollection(COL_NAME, async (collection) => {
-      // Generate random avatar
-      const randomId = Math.floor(Math.random() * 1000);
-      const avatar = `https://i.pravatar.cc/150?img=${randomId}`;
-
+      // First insert the friend document to get the MongoDB-generated ObjectId
       const friend = {
         name: friendData.name,
-        avatar: avatar,
+        avatar: "placeholder", // Temporary placeholder
         balance: 0,
         createdAt: new Date(),
       };
 
       const result = await collection.insertOne(friend);
-      return { ...friend, _id: result.insertedId };
+      const newId = result.insertedId.toString();
+
+      // Update the document with the avatar URL that includes the ObjectId
+      const avatarUrl = `https://i.pravatar.cc/150?u=${newId}`;
+
+      await collection.updateOne(
+        { _id: result.insertedId },
+        { $set: { avatar: avatarUrl } }
+      );
+
+      // Return the updated friend document
+      return {
+        ...friend,
+        _id: result.insertedId,
+        avatar: avatarUrl,
+      };
     });
   };
 

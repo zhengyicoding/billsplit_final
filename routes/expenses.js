@@ -6,14 +6,34 @@ const router = express.Router();
 // GET all expenses
 router.get("/", async (req, res) => {
   try {
-    const expenses = await expensesCol.getAllExpenses();
-    res.json(expenses);
+    // Extract query parameters
+    const options = {
+      page: req.query.page || 1,
+      limit: req.query.limit || 10,
+      sortBy: req.query.sortBy || "date",
+      sortDirection: req.query.sortDirection || "desc",
+      search: req.query.search || "",
+      friendId: req.query.friendId || null,
+      settled: req.query.settled !== undefined ? req.query.settled : null,
+      dateFrom: req.query.dateFrom || null,
+      dateTo: req.query.dateTo || null,
+    };
+
+    console.log("API Query params:", options);
+
+    const result = await expensesCol.getAllExpenses(options);
+
+    res.json(result);
   } catch (err) {
     console.error("Error in GET /expenses:", err);
+    console.error("Error details:", {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+    });
     res.status(500).json({ message: err.message });
   }
 });
-
 // GET expenses by friend
 router.get("/friend/:friendId", async (req, res) => {
   try {

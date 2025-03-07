@@ -1,0 +1,33 @@
+.recent-expenses {
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.view-all-link {
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.recent-expenses-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.expenses-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

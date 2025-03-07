@@ -1,0 +1,117 @@
+.page {
+    width: 100%;
+}
+
+.balance-card {
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+    border-left: 5px solid transparent;
+}
+
+.balance-card.positive {
+    border-left-color: #4CAF50;
+}
+
+.balance-card.negative {
+    border-left-color: #F44336;
+}
+
+.balance-title {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.balance-amount {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.positive .balance-amount {
+    color: #4CAF50;
+}
+
+.negative .balance-amount {
+    color: #F44336;
+}
+
+.balance-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.dashboard-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.friends-section {
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.toggle-view-button {
+    background: none;
+    border: none;
+    color: #2196F3;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.toggle-view-button:hover {
+    text-decoration: underline;
+}
+
+.friends-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.view-more {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.full-friends-view {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.action-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #388E3C;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .dashboard-sections {
+        grid-template-columns: 1fr;
+    }
+}
