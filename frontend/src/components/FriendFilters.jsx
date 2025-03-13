@@ -1,6 +1,7 @@
 import SearchInput from './SearchInput';
 import SortButton from './SortButton';
 import './FriendFilters.css';
+import PropTypes from 'prop-types';
 
 function FriendFilters({ 
   searchTerm = '', 
@@ -39,5 +40,11 @@ function FriendFilters({
     </div>
   );
 }
-
+FriendFilters.propTypes = {
+  searchTerm: PropTypes.string,
+  onSearchChange: PropTypes.func.isRequired,
+  sortField: PropTypes.string,
+  sortDirection: PropTypes.oneOf(['asc', 'desc']),
+  onSortChange: PropTypes.func.isRequired,
+};
 export default FriendFilters;

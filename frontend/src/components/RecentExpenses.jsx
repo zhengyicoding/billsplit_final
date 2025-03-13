@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import ExpenseCard from './ExpenseCard';
 import EmptyState from './EmptyState';
 import './RecentExpenses.css';
+import PropTypes from 'prop-types';
 
 function RecentExpenses({ 
   expenses = [], 
@@ -40,5 +41,21 @@ function RecentExpenses({
     </div>
   );
 }
+RecentExpenses.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    paidBy: PropTypes.string.isRequired,
+    splitMethod: PropTypes.string.isRequired,
+    userAmount: PropTypes.number.isRequired,
+    friendAmount: PropTypes.number.isRequired,
+    settled: PropTypes.bool.isRequired,
+    settledAt: PropTypes.string,
+  })).isRequired,
+  isLoading: PropTypes.bool,
+  getFriendName: PropTypes.func.isRequired,
+};
 
 export default RecentExpenses;

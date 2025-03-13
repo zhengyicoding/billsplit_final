@@ -2,6 +2,7 @@ import FriendCard from './FriendCard';
 import EmptyState from './EmptyState';
 import LoadingSpinner from './LoadingSpinner';
 import './FriendsList.css';
+import PropTypes from 'prop-types';
 
 function FriendsList({ 
   friends = [], 
@@ -39,5 +40,18 @@ function FriendsList({
     </div>
   );
 }
+FriendsList.propTypes = {
+  friends: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired,
+  })).isRequired,
+  isLoading: PropTypes.bool,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSettle: PropTypes.func.isRequired,
+  onAddNew: PropTypes.func.isRequired,
+};
 
 export default FriendsList;

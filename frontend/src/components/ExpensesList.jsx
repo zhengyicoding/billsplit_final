@@ -4,6 +4,7 @@ import Pagination from './Pagination';
 import EmptyState from './EmptyState';
 import LoadingSpinner from './LoadingSpinner';
 import './ExpensesList.css';
+import PropTypes from 'prop-types';
 
 function ExpensesList({ 
   expenses = [], 
@@ -51,5 +52,30 @@ function ExpensesList({
     </div>
   );
 }
+ExpensesList.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    paidBy: PropTypes.string.isRequired,
+    splitMethod: PropTypes.string.isRequired,
+    userAmount: PropTypes.number.isRequired,
+    friendAmount: PropTypes.number.isRequired,
+    settled: PropTypes.bool.isRequired,
+    settledAt: PropTypes.string,
+  })).isRequired,
+  pagination: PropTypes.shape({
+    currentPage: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    totalItems: PropTypes.number.isRequired,
+  }).isRequired,
+  isLoading: PropTypes.bool,
+  getFriendName: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onAddNew: PropTypes.func.isRequired,
+};
 
 export default ExpensesList;

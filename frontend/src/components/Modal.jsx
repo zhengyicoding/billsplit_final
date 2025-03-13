@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './Modal.css';
+import PropTypes from 'prop-types';
 
 function Modal({ children, title, onClose }) {
   // Close modal when Escape key is pressed
@@ -44,5 +45,10 @@ function Modal({ children, title, onClose }) {
     </div>
   );
 }
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default Modal;

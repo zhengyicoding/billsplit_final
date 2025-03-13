@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import FormField from './FormField';
 import Button from './Button';
 import './FriendForm.css';
+import PropTypes from 'prop-types';
 
 function FriendForm({ onSubmit, initialData = null }) {
   const [formData, setFormData] = useState({
@@ -73,5 +74,11 @@ function FriendForm({ onSubmit, initialData = null }) {
     </form>
   );
 }
+FriendForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  initialData: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+};
 
 export default FriendForm;

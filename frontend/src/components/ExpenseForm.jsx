@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import FormField from './FormField';
 import Button from './Button';
 import './ExpenseForm.css';
+import PropTypes from 'prop-types';
 
 function ExpenseForm({ onSubmit, initialData = null, friends = [] }) {
   const [formData, setFormData] = useState({
@@ -258,5 +259,22 @@ function ExpenseForm({ onSubmit, initialData = null, friends = [] }) {
         </form>
       );
     }
+    ExpenseForm.propTypes = {
+      onSubmit: PropTypes.func.isRequired,
+      initialData: PropTypes.shape({
+        description: PropTypes.string,
+        amount: PropTypes.number,
+        friendId: PropTypes.string,
+        date: PropTypes.string,
+        splitMethod: PropTypes.string,
+        paidBy: PropTypes.string,
+        userAmount: PropTypes.number,
+      }),
+      friends: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })).isRequired,
+    };
+    
     
     export default ExpenseForm;

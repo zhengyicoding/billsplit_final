@@ -3,6 +3,7 @@ import Card from './Card';
 import Button from './Button';
 import { formatCurrency } from '../utils/formatters';
 import './FriendCard.css';
+import PropTypes from 'prop-types';
 
 function FriendCard({ 
   friend, 
@@ -89,5 +90,16 @@ function FriendCard({
     </Card>
   );
 }
-
+FriendCard.propTypes = {
+  friend: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired,
+  }).isRequired,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  onSettle: PropTypes.func,
+  compact: PropTypes.bool,
+};
 export default FriendCard;

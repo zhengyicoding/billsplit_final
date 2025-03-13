@@ -1,4 +1,5 @@
 import './SearchInput.css';
+import PropTypes from 'prop-types';
 
 function SearchInput({ 
   value, 
@@ -18,5 +19,12 @@ function SearchInput({
     </div>
   );
 }
+SearchInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  className: PropTypes.string,
+};
+
 
 export default SearchInput;

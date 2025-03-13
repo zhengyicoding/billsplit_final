@@ -1,4 +1,5 @@
 import './FormField.css';
+import PropTypes from 'prop-types';
 
 function FormField({ 
   label, 
@@ -90,5 +91,19 @@ function FormField({
     </div>
   );
 }
+FormField.propTypes = {
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['text', 'number', 'select', 'textarea', 'radio', 'checkbox', 'date']),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
+  onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool,
+  error: PropTypes.string,
+  placeholder: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    label: PropTypes.string.isRequired,
+  })),
+};
 
 export default FormField;

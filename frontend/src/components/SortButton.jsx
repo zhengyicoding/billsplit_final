@@ -1,4 +1,6 @@
 import './SortButton.css';
+import PropTypes from 'prop-types';
+
 
 function SortButton({ 
   label, 
@@ -34,4 +36,11 @@ function SortButton({
     </button>
   );
 }
+SortButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
+  currentSortField: PropTypes.string.isRequired,
+  currentSortDirection: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  onSort: PropTypes.func.isRequired,
+};
 export default SortButton;

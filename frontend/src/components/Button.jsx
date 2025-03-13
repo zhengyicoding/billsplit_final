@@ -1,4 +1,5 @@
 import './Button.css';
+import PropTypes from 'prop-types';
 
 function Button({ 
   children, 
@@ -22,5 +23,14 @@ function Button({
     </button>
   );
 }
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
+};
 
 export default Button;

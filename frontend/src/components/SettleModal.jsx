@@ -2,6 +2,7 @@ import Button from './Button';
 import Modal from './Modal';
 import { formatCurrency } from '../utils/formatters';
 import './SettleModal.css';
+import PropTypes from 'prop-types';
 
 function SettleModal({ friend, onConfirm, onCancel }) {
   if (!friend) return null;
@@ -50,5 +51,14 @@ function SettleModal({ friend, onConfirm, onCancel }) {
     </Modal>
   );
 }
+SettleModal.propTypes = {
+  friend: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired,
+  }).isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
 
 export default SettleModal;

@@ -3,6 +3,7 @@ import FormField from './FormField';
 import SortButton from './SortButton';
 import Button from './Button';
 import './ExpenseFilters.css';
+import PropTypes from 'prop-types';
 
 function ExpenseFilters({ 
   searchTerm = '',
@@ -120,5 +121,24 @@ function ExpenseFilters({
     </div>
   );
 }
+ExpenseFilters.propTypes = {
+  searchTerm: PropTypes.string,
+  onSearchChange: PropTypes.func.isRequired,
+  filters: PropTypes.shape({
+    friendId: PropTypes.string,
+    status: PropTypes.string,
+    dateFrom: PropTypes.string,
+    dateTo: PropTypes.string,
+  }),
+  onFilterChange: PropTypes.func.isRequired,
+  sortField: PropTypes.string,
+  sortDirection: PropTypes.oneOf(['asc', 'desc']),
+  onSortChange: PropTypes.func.isRequired,
+  friends: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })),
+  onResetFilters: PropTypes.func.isRequired,
+};
 
 export default ExpenseFilters;

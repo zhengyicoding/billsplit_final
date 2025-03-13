@@ -1,5 +1,6 @@
 import Button from './Button';
 import './EmptyState.css';
+import PropTypes from 'prop-types';
 
 function EmptyState({ 
   message = 'No items found', 
@@ -17,5 +18,10 @@ function EmptyState({
     </div>
   );
 }
+EmptyState.propTypes = {
+  message: PropTypes.string,
+  actionText: PropTypes.string,
+  onAction: PropTypes.func,
+};
 
 export default EmptyState;

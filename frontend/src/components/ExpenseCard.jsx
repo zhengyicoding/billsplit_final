@@ -3,6 +3,7 @@ import Card from './Card';
 import Button from './Button';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import './ExpenseCard.css';
+import PropTypes from 'prop-types';
 
 function ExpenseCard({ 
   expense, 
@@ -137,5 +138,23 @@ function ExpenseCard({
     </Card>
   );
 }
+ExpenseCard.propTypes = {
+  expense: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    paidBy: PropTypes.string.isRequired,
+    splitMethod: PropTypes.string.isRequired,
+    userAmount: PropTypes.number.isRequired,
+    friendAmount: PropTypes.number.isRequired,
+    settled: PropTypes.bool.isRequired,
+    settledAt: PropTypes.string,
+  }).isRequired,
+  friendName: PropTypes.string.isRequired,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  compact: PropTypes.bool,
+};
 
 export default ExpenseCard;
