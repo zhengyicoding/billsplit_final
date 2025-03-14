@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Card from './Card';
 import Button from './Button';
 import { formatCurrency, formatDate } from '../utils/formatters';

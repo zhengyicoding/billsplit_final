@@ -1,4 +1,3 @@
-import React from 'react';
 import ExpenseCard from './ExpenseCard';
 import Pagination from './Pagination';
 import EmptyState from './EmptyState';

@@ -1,3 +1,4 @@
+import Button from "./Button";
 import './SortButton.css';
 import PropTypes from 'prop-types';
 
@@ -23,7 +24,7 @@ function SortButton({
   };
   
   return (
-    <button 
+    <Button 
       className={`sort-button ${isActive ? 'active' : ''}`} 
       onClick={handleClick}
     >
@@ -33,7 +34,7 @@ function SortButton({
           {currentSortDirection === 'asc' ? ' ↑' : ' ↓'}
         </span>
       )}
-    </button>
+    </Button>
   );
 }
 SortButton.propTypes = {

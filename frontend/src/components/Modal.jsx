@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import Button from './Button';
 import './Modal.css';
 import PropTypes from 'prop-types';
 
@@ -35,7 +36,7 @@ function Modal({ children, title, onClose }) {
         {title && (
           <div className="modal-header">
             <h2>{title}</h2>
-            <button className="modal-close" onClick={onClose}>×</button>
+            <Button className="modal-close" onClick={onClose}>×</Button>
           </div>
         )}
         <div className="modal-body">
