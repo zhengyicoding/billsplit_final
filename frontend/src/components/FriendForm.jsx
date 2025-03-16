@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FormField from './FormField';
 import Button from './Button';
-import './FriendForm.css';
+import '../css/FriendForm.css';
 import PropTypes from 'prop-types';
 
 function FriendForm({ onSubmit, initialData = null }) {

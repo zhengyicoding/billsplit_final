@@ -1,7 +1,7 @@
 import FriendCard from './FriendCard';
 import EmptyState from './EmptyState';
 import LoadingSpinner from './LoadingSpinner';
-import './FriendsList.css';
+import '../css/FriendsList.css';
 import PropTypes from 'prop-types';
 
 function FriendsList({ 

@@ -1,4 +1,4 @@
-import './LoadingSpinner.css';
+import '../css/LoadingSpinner.css';
 import PropTypes from 'prop-types';
 
 function LoadingSpinner({ message = 'Loading...' }) {

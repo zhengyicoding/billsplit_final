@@ -1,4 +1,4 @@
-import './SearchInput.css';
+import '../css/SearchInput.css';
 import PropTypes from 'prop-types';
 
 function SearchInput({ 

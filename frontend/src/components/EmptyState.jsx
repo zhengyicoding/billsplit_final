@@ -1,5 +1,5 @@
 import Button from './Button';
-import './EmptyState.css';
+import '../css/EmptyState.css';
 import PropTypes from 'prop-types';
 
 function EmptyState({ 

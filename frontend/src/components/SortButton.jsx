@@ -1,5 +1,5 @@
 import Button from "./Button";
-import './SortButton.css';
+import '../css/SortButton.css';
 import PropTypes from 'prop-types';
 
 

@@ -1,4 +1,4 @@
-import './Card.css';
+import '../css/Card.css';
 import PropTypes from 'prop-types';
 
 function Card({ children, className = '', onClick }) {

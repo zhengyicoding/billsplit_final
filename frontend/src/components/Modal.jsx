@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Button from './Button';
-import './Modal.css';
+import '../css/Modal.css';
 import PropTypes from 'prop-types';
 
 function Modal({ children, title, onClose }) {

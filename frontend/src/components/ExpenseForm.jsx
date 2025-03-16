@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FormField from './FormField';
 import Button from './Button';
-import './ExpenseForm.css';
+import '../css/ExpenseForm.css';
 import PropTypes from 'prop-types';
 
 function ExpenseForm({ onSubmit, initialData = null, friends = [] }) {

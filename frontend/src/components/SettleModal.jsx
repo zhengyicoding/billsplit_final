@@ -1,7 +1,7 @@
 import Button from './Button';
 import Modal from './Modal';
 import { formatCurrency } from '../utils/formatters';
-import './SettleModal.css';
+import '../css/SettleModal.css';
 import PropTypes from 'prop-types';
 
 function SettleModal({ friend, onConfirm, onCancel }) {

@@ -2,7 +2,7 @@ import SearchInput from './SearchInput';
 import FormField from './FormField';
 import SortButton from './SortButton';
 import Button from './Button';
-import './ExpenseFilters.css';
+import '../css/ExpenseFilters.css';
 import PropTypes from 'prop-types';
 
 function ExpenseFilters({ 

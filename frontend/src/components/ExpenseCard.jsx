@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from './Card';
 import Button from './Button';
 import { formatCurrency, formatDate } from '../utils/formatters';
-import './ExpenseCard.css';
+import '../css/ExpenseCard.css';
 import PropTypes from 'prop-types';
 
 function ExpenseCard({ 

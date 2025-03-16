@@ -1,5 +1,5 @@
 import Button from './Button';
-import './Pagination.css';
+import '../css/Pagination.css';
 import PropTypes from 'prop-types';
 
 function Pagination({ 

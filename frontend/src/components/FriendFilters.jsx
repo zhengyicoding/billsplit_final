@@ -1,6 +1,6 @@
 import SearchInput from './SearchInput';
 import SortButton from './SortButton';
-import './FriendFilters.css';
+import '../css/FriendFilters.css';
 import PropTypes from 'prop-types';
 
 function FriendFilters({ 

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import ExpenseCard from './ExpenseCard';
 import EmptyState from './EmptyState';
 import LoadingSpinner from './LoadingSpinner';
-import './RecentExpenses.css';
+import '../css/RecentExpenses.css';
 import PropTypes from 'prop-types';
 
 function RecentExpenses({ 

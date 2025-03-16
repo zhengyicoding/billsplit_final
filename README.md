@@ -53,6 +53,26 @@ If using MongoDB locally instead of MongoDB Atlas, use `mongodb://localhost:2701
 
 #### Step 4
 
+Return to the root directory and run seeder file to import the 1000 sample data items into the data collections:
+
+```
+node ./db/seeder.js
+```
+
+The following message should be shown in the terminal:
+
+```
+Connected to MongoDB
+Existing collections cleared
+Loaded 1000 expenses from file
+Inserted 5 friends
+Inserted 1000 expenses
+Created indexes
+Database seeded successfully
+```
+
+#### Step 5
+
 Return to the root directory and start both server and client:
 
 Development mode:
@@ -68,7 +88,7 @@ npm run build
 npm start
 ```
 
-The app will be available at `http://localhost:3000/` and the server will run on `http://localhost:3001/`.
+The app will be available at `http://localhost:5173/` and the server will run on `http://localhost:3000/`.
 
 ## Features
 

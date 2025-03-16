@@ -2,7 +2,7 @@ import ExpenseCard from './ExpenseCard';
 import Pagination from './Pagination';
 import EmptyState from './EmptyState';
 import LoadingSpinner from './LoadingSpinner';
-import './ExpensesList.css';
+import '../css/ExpensesList.css';
 import PropTypes from 'prop-types';
 
 function ExpensesList({ 

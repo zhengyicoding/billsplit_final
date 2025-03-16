@@ -1,7 +1,7 @@
 import Card from './Card';
 import Button from './Button';
 import { formatCurrency } from '../utils/formatters';
-import './FriendCard.css';
+import '../css/FriendCard.css';
 import PropTypes from 'prop-types';
 
 function FriendCard({ 
