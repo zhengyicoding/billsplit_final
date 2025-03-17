@@ -26,7 +26,7 @@ Instructor: John Alexis Guerra Gómez [Profile](https://johnguerra.co/)
 Git clone this repository to your local repository.
 
 ```
-git clone https://github.com/zhengyicoding/billsplit.git
+git clone git@github.com:zhengyicoding/billsplit.git
 ```
 
 #### Step 2
@@ -53,7 +53,7 @@ If using MongoDB locally instead of MongoDB Atlas, use `mongodb://localhost:2701
 
 #### Step 4
 
-Return to the root directory and run seeder file to import the 1000 sample data items into the data collections:
+Return to the root directory and run seeder file to import the 1000 expense sample data items into the data collections:
 
 ```
 node ./db/seeder.js
@@ -77,9 +77,17 @@ Return to the root directory and start both server and client:
 
 Development mode:
 
+In project folder, run below command to start server:
+
+```npm start```
+
+Open a new terminal to start client:
+
 ```
+cd front end
 npm run dev
 ```
+
 
 Production mode:
 
@@ -109,7 +117,7 @@ Collection 1: **friends** - Stores friend information and current balances
 {
   _id: ObjectId,
   name: String,
-  profilePicUrl: String,
+  avatar/profilePic: String,
   balance: Number,
   createdAt: Date
 }
@@ -135,21 +143,56 @@ Collection 2: **expenses** - Records expense details and split information
 
 ## Screenshots:
 
-### Dashboard - Overview of balances and recent expenses
+### Dashboard - Overview of balances, friends list and recent expenses
 
-![Dashboard](https://github.com/zhengyicoding/billsplit/raw/main/screenshots/dashboard.png)
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/66dfa82c-f7cc-4f8c-aef9-2196aeac397e" />
+
 
 ### Friends List - View and manage friends
 
-![Friends List](https://github.com/zhengyicoding/billsplit/raw/main/screenshots/friends-list.png)
+Add friend:
+
+<img width="1511" alt="image" src="https://github.com/user-attachments/assets/7106fc91-6725-4ed4-9918-2cc713df9190" />
+
+Edit friend:
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/b6d46a66-e7ac-4050-82e1-96f2f70d7bfd" />
+
+Delete friend:
+
+<img width="1510" alt="image" src="https://github.com/user-attachments/assets/c2097e71-01db-44ed-b0f7-52fc5f97b5de" />
+
+Settle up with a friend:
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/283b08c8-6ceb-4ac1-9c7c-774d7eeb1efb" />
+
+### Expense page - view all and filter/sort expense items with pagination
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/4737746e-5a59-4369-926d-83afad578aeb" />
+
+<img width="1511" alt="image" src="https://github.com/user-attachments/assets/0dfa1f17-b1fa-492e-a844-3fa0eadcb029" />
+
 
 ### Add Expense - Create a new expense and split with friends
 
-![Add Expense](https://github.com/zhengyicoding/billsplit/raw/main/screenshots/add-expense.png)
+<img width="1511" alt="image" src="https://github.com/user-attachments/assets/9be3042e-7753-47a1-9e41-ebb7150f38b1" />
+
 
 ### Expense Details - View and manage specific expense
 
-![Expense Details](https://github.com/zhengyicoding/billsplit/raw/main/screenshots/expense-details.png)
+View a specific expense item:
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/6120af08-2938-4000-ab3b-dcf04c074ad7" />
+
+Edit a specific expense item:
+
+<img width="1511" alt="image" src="https://github.com/user-attachments/assets/1ba44f5a-0e6e-4ecd-8a15-4b721ef73c20" />
+
+Delete a specific expense item:
+
+<img width="1511" alt="image" src="https://github.com/user-attachments/assets/e0a270de-73f4-4ca6-a156-8148a9024883" />
+
+
 
 ## Technology Stack:
 
