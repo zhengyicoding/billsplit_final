@@ -28,38 +28,46 @@ function DashboardPage() {
   const [sortDirection, setSortDirection] = useState('asc');
   const [showAllFriends, setShowAllFriends] = useState(false);
 
-  // Fetch dashboard data (both friends and recent expenses)
-  const fetchDashboardData = async () => {
-    try {
-      setIsLoading(true);
-      
-      // Fetch friends data
-      const friendsResponse = await fetch('/api/friends');
-      if (!friendsResponse.ok) {
-        throw new Error('Failed to fetch friends');
-      }
-      const friendsData = await friendsResponse.json();
-      
-      // Fetch recent expenses (limit to 5)
-      const expensesResponse = await fetch('/api/expenses?limit=5');
-      if (!expensesResponse.ok) {
-        throw new Error('Failed to fetch expenses');
-      }
-      const expensesData = await expensesResponse.json();
-      
-      setFriends(friendsData);
-      setExpenses(expensesData.expenses || expensesData);
-      setIsLoading(false);
-    } catch (err) {
-      console.error('Error fetching dashboard data:', err);
-      setError(err.message || 'Failed to load dashboard data');
-      setIsLoading(false);
-    }
-  };
-  
-  // Load dashboard data on initial render
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    
+    const fetchDashboardData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Pass the signal to fetch calls
+        const friendsResponse = await fetch('/api/friends', { signal });
+        if (!friendsResponse.ok) {
+          throw new Error('Failed to fetch friends');
+        }
+        const friendsData = await friendsResponse.json();
+        
+        const expensesResponse = await fetch('/api/expenses?limit=5', { signal });
+        if (!expensesResponse.ok) {
+          throw new Error('Failed to fetch expenses');
+        }
+        const expensesData = await expensesResponse.json();
+        
+        setFriends(friendsData);
+        setExpenses(expensesData.expenses || expensesData);
+        setIsLoading(false);
+      } catch (err) {
+        // Don't update state if this was an abort error
+        if (err.name !== 'AbortError') {
+          console.error('Error fetching dashboard data:', err);
+          setError(err.message || 'Failed to load dashboard data');
+          setIsLoading(false);
+        }
+      }
+    };
+    
     fetchDashboardData();
+    
+    // Return cleanup function
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   // Calculate the total balance (positive means friends owe you, negative means you owe)

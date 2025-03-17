@@ -35,95 +35,134 @@ function ExpensesPage() {
   const [sortField, setSortField] = useState('date');
   const [sortDirection, setSortDirection] = useState('desc');
   
-  // Fetch friends data (needed for expense form and filtering)
-  const fetchFriends = async () => {
-    try {
-      const response = await fetch('/api/friends');
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch friends');
-      }
-      
-      const data = await response.json();
-      setFriends(data);
-    } catch (err) {
+  // Fetch friends data
+const fetchFriends = async (signal) => {
+  try {
+    const response = await fetch('/api/friends', { signal });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch friends');
+    }
+    
+    const data = await response.json();
+    setFriends(data);
+  } catch (err) {
+    if (err.name !== 'AbortError') {
       console.error('Error fetching friends:', err);
       setError(err.message || 'Failed to load friends');
     }
-  };
-  
-  // Fetch expenses data with pagination and filtering
-  const fetchExpenses = async (page = pagination.currentPage) => {
-    try {
-      setIsLoading(true);
-      
-      // Build query parameters
-      const queryParams = new URLSearchParams({
-        page,
-        limit: pagination.itemsPerPage,
-        sortBy: sortField,
-        sortDirection,
-        search: searchTerm
+    throw err; // Re-throw so the calling function can catch it
+  }
+};
+
+// Fetch expenses data with pagination and filtering
+const fetchExpenses = async (page = pagination.currentPage, signal) => {
+  try {
+    setIsLoading(true);
+    
+    // Build query parameters
+    const queryParams = new URLSearchParams({
+      page,
+      limit: pagination.itemsPerPage,
+      sortBy: sortField,
+      sortDirection,
+      search: searchTerm
+    });
+    
+    // Add filters if they exist
+    if (filters.friendId) queryParams.append('friendId', filters.friendId);
+    if (filters.status !== 'all') queryParams.append('settled', filters.status === 'settled');
+    if (filters.dateFrom) queryParams.append('dateFrom', filters.dateFrom);
+    if (filters.dateTo) queryParams.append('dateTo', filters.dateTo);
+    
+    const response = await fetch(`/api/expenses?${queryParams.toString()}`, { signal });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch expenses');
+    }
+    
+    const data = await response.json();
+    
+    // Check if the response has the new format with pagination info
+    if (data.expenses && data.pagination) {
+      setExpenses(data.expenses);
+      setPagination({
+        ...pagination,
+        currentPage: data.pagination.page,
+        totalPages: data.pagination.pages,
+        totalItems: data.pagination.total,
+        itemsPerPage: data.pagination.limit
       });
-      
-      // Add filters if they exist
-      if (filters.friendId) queryParams.append('friendId', filters.friendId);
-      if (filters.status !== 'all') queryParams.append('settled', filters.status === 'settled');
-      if (filters.dateFrom) queryParams.append('dateFrom', filters.dateFrom);
-      if (filters.dateTo) queryParams.append('dateTo', filters.dateTo);
-      
-      const response = await fetch(`/api/expenses?${queryParams.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch expenses');
-      }
-      
-      const data = await response.json();
-      
-      // Check if the response has the new format with pagination info
-      if (data.expenses && data.pagination) {
-        setExpenses(data.expenses);
-        setPagination({
-          ...pagination,
-          currentPage: data.pagination.page,
-          totalPages: data.pagination.pages,
-          totalItems: data.pagination.total,
-          itemsPerPage: data.pagination.limit
-        });
-      } else {
-        // Fallback for old format (just an array of expenses)
-        setExpenses(data);
-        setPagination({
-          ...pagination,
-          currentPage: page,
-          totalPages: 1,
-          totalItems: data.length || 0
-        });
-      }
-      
-      setIsLoading(false);
-    } catch (err) {
+    } else {
+      // Fallback for old format (just an array of expenses)
+      setExpenses(data);
+      setPagination({
+        ...pagination,
+        currentPage: page,
+        totalPages: 1,
+        totalItems: data.length || 0
+      });
+    }
+    
+    setIsLoading(false);
+  } catch (err) {
+    if (err.name !== 'AbortError') {
       console.error('Error fetching expenses:', err);
       setError(err.message || 'Failed to load expenses');
       setIsLoading(false);
     }
-  };
+    throw err; // Re-throw so the calling function can catch it
+  }
+};
+      
+
   
   // Load initial data
-  useEffect(() => {
-    const loadData = async () => {
-      await fetchFriends();
-      await fetchExpenses(1);
-    };
-    
-    loadData();
-  }, []);
+useEffect(() => {
+  const controller = new AbortController();
+  const signal = controller.signal;
   
-  // Refetch when filters, sort, or search changes
-  useEffect(() => {
-    fetchExpenses(1);
-  }, [filters, sortField, sortDirection, searchTerm]);
+  const loadData = async () => {
+    try {
+      // Modify fetchFriends and fetchExpenses to accept signal parameter
+      await fetchFriends(signal);
+      await fetchExpenses(1, signal);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Error loading initial data:', err);
+      }
+    }
+  };
   
+  loadData();
+  
+  return () => {
+    controller.abort();
+  };
+}, []);
+
+// Refetch when filters, sort, or search changes
+useEffect(() => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  
+  const loadFilteredData = async () => {
+    try {
+      await fetchExpenses(1, signal);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Error loading filtered data:', err);
+      }
+    }
+  };
+  
+  loadFilteredData();
+  
+  return () => {
+    controller.abort();
+  };
+}, [filters, sortField, sortDirection, searchTerm]);
+
   // Handle adding a new expense
   const handleAddExpense = async (expenseData) => {
     try {
