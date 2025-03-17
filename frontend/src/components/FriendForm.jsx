@@ -18,7 +18,7 @@ function FriendForm({ onSubmit, initialData = null }) {
     if (initialData) {
       setFormData({
         name: initialData.name || '',
-        profilePic: initialData.profilePic || '',
+        profilePic: initialData.profilePic || initialData.avatar || '',
       });
       
       if (initialData.profilePic) {
