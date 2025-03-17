@@ -99,7 +99,7 @@ function FriendForm({ onSubmit, initialData = null }) {
         value={formData.profilePic}
         onChange={handleInputChange}
         error={errors.profilePic}
-        placeholder="Leave empty for random avatar"
+        placeholder="Please input a valid profile image URL or leave blank"
       />
       
       {previewUrl && (
