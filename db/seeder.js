@@ -112,7 +112,7 @@ async function seedDatabase() {
         friendsMap.set(expense.friendId, {
           _id: new ObjectId(expense.friendId),
           name: expense.friendName,
-          avatar: `https://i.pravatar.cc/150?u=${expense.friendId}`,
+          avatar: `https://i.pravatar.cc/150?u=${expense.friendId.slice(-8)}`,
           balance: 0,
           expenses: [],
         });

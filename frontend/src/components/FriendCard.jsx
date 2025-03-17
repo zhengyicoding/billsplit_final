@@ -3,6 +3,7 @@ import Button from './Button';
 import { formatCurrency } from '../utils/formatters';
 import '../css/FriendCard.css';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 function FriendCard({ 
   friend, 
@@ -13,7 +14,13 @@ function FriendCard({
 }) {
   if (!friend) return null;
 
-  const { _id, name, avatar, balance } = friend;
+  const { _id, name, profilePic, avatar, balance } = friend;
+  
+  // Use either profilePic (new field) or avatar (old field) with fallback
+  const [imageError, setImageError] = useState(false);
+  const imageUrl = imageError ? 
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random` : 
+    (profilePic || avatar);
   
   // Determine balance styling and text
   const balanceText = balance === 0 
@@ -28,12 +35,21 @@ function FriendCard({
       ? 'negative' 
       : 'neutral';
 
+  // Handle image loading errors
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   // Compact version for dashboards and overview sections
   if (compact) {
     return (
       <Card className="friend-card compact">
         <div className="friend-avatar">
-          <img src={avatar} alt={`${name}'s avatar`} />
+          <img 
+            src={imageUrl} 
+            alt={`${name}'s avatar`} 
+            onError={handleImageError}
+          />
         </div>
         <div className="friend-info">
           <h3>{name}</h3>
@@ -49,7 +65,11 @@ function FriendCard({
   return (
     <Card className="friend-card">
       <div className="friend-avatar">
-        <img src={avatar} alt={`${name}'s avatar`} />
+        <img 
+          src={imageUrl} 
+          alt={`${name}'s avatar`} 
+          onError={handleImageError}
+        />
       </div>
       <div className="friend-info">
         <h3>{name}</h3>
@@ -89,11 +109,14 @@ function FriendCard({
     </Card>
   );
 }
+
 FriendCard.propTypes = {
   friend: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    avatar: PropTypes.string.isRequired,
+    // Support both old and new field names
+    avatar: PropTypes.string,
+    profilePic: PropTypes.string,
     balance: PropTypes.number.isRequired,
   }).isRequired,
   onEdit: PropTypes.func,
@@ -101,4 +124,5 @@ FriendCard.propTypes = {
   onSettle: PropTypes.func,
   compact: PropTypes.bool,
 };
+
 export default FriendCard;

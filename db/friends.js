@@ -28,6 +28,12 @@ function FriendsCol() {
       console.error(`Error creating indexes for ${COL_NAME}:`, err)
     );
 
+  // Generate random avatar URL based on ID or name
+  const generateRandomAvatar = (id) => {
+    // Using pravatar which is already in your codebase
+    return `https://i.pravatar.cc/150?u=${id.slice(-8)}`;
+  };
+
   // Get all friends, sorted by name
   self.getAllFriends = async () => {
     return withCollection(COL_NAME, async (collection) => {
@@ -52,7 +58,8 @@ function FriendsCol() {
       // First insert the friend document to get the MongoDB-generated ObjectId
       const friend = {
         name: friendData.name,
-        avatar: "placeholder", // Temporary placeholder
+        // Use profilePic from request if available, otherwise use placeholder
+        profilePic: friendData.profilePic || "placeholder",
         balance: 0,
         createdAt: new Date(),
       };
@@ -60,19 +67,22 @@ function FriendsCol() {
       const result = await collection.insertOne(friend);
       const newId = result.insertedId.toString();
 
-      // Update the document with the avatar URL that includes the ObjectId
-      const avatarUrl = `https://i.pravatar.cc/150?u=${newId}`;
+      // If profilePic wasn't provided or was set to placeholder, generate a random one
+      if (!friendData.profilePic || friend.profilePic === "placeholder") {
+        const avatarUrl = generateRandomAvatar(newId, friendData.name);
 
-      await collection.updateOne(
-        { _id: result.insertedId },
-        { $set: { avatar: avatarUrl } }
-      );
+        await collection.updateOne(
+          { _id: result.insertedId },
+          { $set: { profilePic: avatarUrl } }
+        );
+
+        friend.profilePic = avatarUrl;
+      }
 
       // Return the updated friend document
       return {
         ...friend,
         _id: result.insertedId,
-        avatar: avatarUrl,
       };
     });
   };
@@ -81,7 +91,13 @@ function FriendsCol() {
   self.updateFriend = async (id, updateData) => {
     return withCollection(COL_NAME, async (collection) => {
       // Don't allow updating certain fields
-      const { _id, balance, ...safeUpdateData } = updateData;
+      const { ...safeUpdateData } = updateData;
+
+      // If profilePic is empty string, generate a random one
+      if (safeUpdateData.profilePic === "") {
+        const friendObj = await self.getFriendById(id);
+        safeUpdateData.profilePic = generateRandomAvatar(id, friendObj.name);
+      }
 
       const result = await collection.findOneAndUpdate(
         { _id: new ObjectId(id) },
