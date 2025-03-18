@@ -23,4 +23,14 @@ app.use(express.static(path.join(__dirname, "frontend/dist")));
 app.use("/api/friends", friendsRouter);
 app.use("/api/expenses", expensesRouter);
 
+// Replace the current catch-all route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+});
+
+// Add a more specific non-API route handler
+app.get(/^(?!\/api\/).+$/, (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+});
+
 export default app;

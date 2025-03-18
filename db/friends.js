@@ -30,7 +30,6 @@ function FriendsCol() {
 
   // Generate random avatar URL based on ID or name
   const generateRandomAvatar = (id) => {
-    // Ensure id is a string and get last 8 characters safely
     const idString = String(id);
     const idSuffix = idString.length >= 8 ? idString.slice(-8) : idString;
 
@@ -99,7 +98,7 @@ function FriendsCol() {
         console.log("Update data:", updateData);
 
         // Create ObjectId
-        const objectId = new ObjectId(id);
+        const objectId = ObjectId.createFromHexString(id);
         console.log(`Successfully created ObjectId: ${objectId}`);
 
         // Check if friend exists
@@ -124,8 +123,6 @@ function FriendsCol() {
         }
 
         console.log("Safe update data:", safeUpdateData);
-
-        // Try multiple approaches for different MongoDB versions
 
         // Approach 1: Use updateOne instead of findOneAndUpdate
         const updateResult = await collection.updateOne(
