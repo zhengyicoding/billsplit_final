@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "main": "./bin/www.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "start": "node --watch ./bin/www.js",
+    "start": "node ./bin/www.js",
+    "dev": "node --watch ./bin/www.js",
     "build": "cd frontend && npm install && npm run build"
   },
   "dependencies": {

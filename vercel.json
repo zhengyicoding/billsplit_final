@@ -22,8 +22,16 @@
       "handle": "filesystem"
     },
     {
+      "src": "/assets/(.*)",
+      "dest": "/frontend/dist/assets/$1"
+    },
+    {
+      "src": "/(.*\\.[a-z0-9]{8}\\.[a-z]+)$",
+      "dest": "/frontend/dist/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/frontend/dist/index.html"
+      "dest": "/bin/www.js"
     }
   ]
 }
