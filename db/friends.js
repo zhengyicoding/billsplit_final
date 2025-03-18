@@ -30,8 +30,12 @@ function FriendsCol() {
 
   // Generate random avatar URL based on ID or name
   const generateRandomAvatar = (id) => {
+    // Ensure id is a string and get last 8 characters safely
+    const idString = String(id);
+    const idSuffix = idString.length >= 8 ? idString.slice(-8) : idString;
+
     // Using pravatar which is already in your codebase
-    return `https://i.pravatar.cc/150?u=${id.slice(-8)}`;
+    return `https://i.pravatar.cc/150?u=${idSuffix}`;
   };
 
   // Get all friends, sorted by name
@@ -48,7 +52,7 @@ function FriendsCol() {
   // Get a specific friend by ID
   self.getFriendById = async (id) => {
     return withCollection(COL_NAME, async (collection) => {
-      return collection.findOne({ _id: new ObjectId(id) });
+      return collection.findOne({ _id: ObjectId.createFromHexString(id) });
     });
   };
 
@@ -87,32 +91,78 @@ function FriendsCol() {
     });
   };
 
-  // Update a friend
+  // Update a friend with fixed profilePic handling
   self.updateFriend = async (id, updateData) => {
     return withCollection(COL_NAME, async (collection) => {
-      // Don't allow updating certain fields
-      const { ...safeUpdateData } = updateData;
+      try {
+        console.log(`Attempting to update friend with ID: ${id}`);
+        console.log("Update data:", updateData);
 
-      // If profilePic is empty string, generate a random one
-      if (safeUpdateData.profilePic === "") {
-        const friendObj = await self.getFriendById(id);
-        safeUpdateData.profilePic = generateRandomAvatar(id, friendObj.name);
+        // Create ObjectId
+        const objectId = new ObjectId(id);
+        console.log(`Successfully created ObjectId: ${objectId}`);
+
+        // Check if friend exists
+        const existingFriend = await collection.findOne({ _id: objectId });
+
+        if (!existingFriend) {
+          console.error(`No friend found with ID: ${id}`);
+          throw new Error(`Friend with ID ${id} not found`);
+        }
+
+        console.log("Found existing friend:", existingFriend);
+
+        // Process update data
+        const safeUpdateData = {};
+
+        if (updateData.name !== undefined) {
+          safeUpdateData.name = updateData.name;
+        }
+
+        if (updateData.profilePic !== undefined) {
+          safeUpdateData.profilePic = updateData.profilePic;
+        }
+
+        console.log("Safe update data:", safeUpdateData);
+
+        // Try multiple approaches for different MongoDB versions
+
+        // Approach 1: Use updateOne instead of findOneAndUpdate
+        const updateResult = await collection.updateOne(
+          { _id: objectId },
+          { $set: safeUpdateData }
+        );
+
+        console.log("Update result:", updateResult);
+
+        if (!updateResult.matchedCount) {
+          throw new Error(`Friend with ID ${id} not found`);
+        }
+
+        if (!updateResult.modifiedCount) {
+          console.warn(
+            "Warning: Document found but not modified. This could be because the data didn't change."
+          );
+        }
+
+        // Fetch the updated document separately
+        const updatedFriend = await collection.findOne({ _id: objectId });
+        console.log("Updated friend:", updatedFriend);
+
+        return updatedFriend;
+      } catch (error) {
+        console.error(`Error updating friend ${id}:`, error);
+        throw error;
       }
-
-      const result = await collection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
-        { $set: safeUpdateData },
-        { returnDocument: "after" }
-      );
-
-      return result.value;
     });
   };
 
   // Delete a friend
   self.deleteFriend = async (id) => {
     return withCollection(COL_NAME, async (collection) => {
-      const result = await collection.deleteOne({ _id: new ObjectId(id) });
+      const result = await collection.deleteOne({
+        _id: ObjectId.createFromHexString(id),
+      });
       return result.deletedCount > 0;
     });
   };
@@ -121,7 +171,7 @@ function FriendsCol() {
   self.updateBalance = async (id, newBalance) => {
     return withCollection(COL_NAME, async (collection) => {
       const result = await collection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
+        { _id: ObjectId.createFromHexString(id) },
         { $set: { balance: newBalance } },
         { returnDocument: "after" }
       );
@@ -134,7 +184,7 @@ function FriendsCol() {
   self.resetBalance = async (id) => {
     return withCollection(COL_NAME, async (collection) => {
       const result = await collection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
+        { _id: ObjectId.createFromHexString(id) },
         { $set: { balance: 0 } },
         { returnDocument: "after" }
       );

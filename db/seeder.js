@@ -110,9 +110,9 @@ async function seedDatabase() {
     for (const expense of normalizedExpenses) {
       if (!friendsMap.has(expense.friendId)) {
         friendsMap.set(expense.friendId, {
-          _id: new ObjectId(expense.friendId),
+          _id: ObjectId.createFromHexString(expense.friendId),
           name: expense.friendName,
-          avatar: `https://i.pravatar.cc/150?u=${expense.friendId.slice(-8)}`,
+          profilePic: `https://i.pravatar.cc/150?u=${expense.friendId.slice(-8)}`,
           balance: 0,
           expenses: [],
         });

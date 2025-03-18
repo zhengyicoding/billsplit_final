@@ -86,7 +86,7 @@ function ExpensesCol() {
           toDateStr
         );
 
-        // Use a simpler string-based comparison
+        // Use a simple string-based comparison
         if (fromDateStr && toDateStr) {
           // Create a raw MongoDB query that does string comparison on just the date portion
           query.date = {
@@ -149,7 +149,7 @@ function ExpensesCol() {
   // Get a specific expense by ID
   self.getExpenseById = async (id) => {
     return withCollection(COL_NAME, async (collection) => {
-      return collection.findOne({ _id: new ObjectId(id) });
+      return collection.findOne({ _id: ObjectId.createFromHexString(id) });
     });
   };
 
@@ -387,7 +387,7 @@ function ExpensesCol() {
 
       // Save the updated expense
       const result = await collection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
+        { _id: ObjectId.createFromHexString(id) },
         { $set: updatedExpense },
         { returnDocument: "after" }
       );
@@ -427,7 +427,9 @@ function ExpensesCol() {
       }
 
       // Delete the expense
-      const result = await collection.deleteOne({ _id: new ObjectId(id) });
+      const result = await collection.deleteOne({
+        _id: ObjectId.createFromHexString(id),
+      });
       return result.deletedCount > 0;
     });
   };
