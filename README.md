@@ -197,9 +197,9 @@ Delete a specific expense item:
 
 ## Links:
 
-[Design Document](https://github.com/zhengyicoding/billsplit/blob/main/design_doc.pdf)
+[Design Document](https://github.com/zhengyicoding/billsplit/blob/main/designDoc/BillSplit%20App%20Design%20Document.pdf)
 
-[Slides](https://docs.google.com/presentation/d/1aBC123DefGHIjkLMNOpqRStuVWXyz/edit?usp=sharing)
+[Slides](https://docs.google.com/presentation/d/1dzMs63gO8veD8iX67uC0WgvGpZF5QL06qQMJLcL_82M/edit?usp=sharing)
 
 [Video Demo](https://youtu.be/example)
 
