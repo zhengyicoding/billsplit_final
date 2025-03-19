@@ -11,7 +11,7 @@
     "start": "node --watch ./app.js",
     "debug": "DEBUG=express:* node --watch ./bin/www.js",
     "postinstall": "cd frontend && npm install",
-    "build": "cd frontend && npm run build && cd ..",
+    "build": "cd frontend && npm run build",
     "lint": "eslint . && prettier --check ."
   },
   "dependencies": {
