@@ -5,7 +5,6 @@ import logger from "morgan";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import debugPckg from "debug";
-import "dotenv/config";
 
 import friendsRouter from "./routes/friends.js";
 import expensesRouter from "./routes/expenses.js";
