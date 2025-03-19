@@ -17,7 +17,7 @@ Instructor: John Alexis Guerra Gómez [Profile](https://johnguerra.co/)
 
 ### Option 1: Live Demo
 
-[BillSplit App](https://billsplit-app.vercel.app/)
+[BillSplit App](https://billsplit-mu.vercel.app/)
 
 ### Option 2: Run locally
 
@@ -79,7 +79,7 @@ Development mode:
 
 In project folder, run below command to start server:
 
-```npm start```
+`npm start`
 
 Open a new terminal to start client:
 
@@ -87,7 +87,6 @@ Open a new terminal to start client:
 cd front end
 npm run dev
 ```
-
 
 Production mode:
 
@@ -117,7 +116,7 @@ Collection 1: **friends** - Stores friend information and current balances
 {
   _id: ObjectId,
   name: String,
-  avatar/profilePic: String,
+  profilePic: String,
   balance: Number,
   createdAt: Date
 }
@@ -147,7 +146,6 @@ Collection 2: **expenses** - Records expense details and split information
 
 <img width="1512" alt="image" src="https://github.com/user-attachments/assets/66dfa82c-f7cc-4f8c-aef9-2196aeac397e" />
 
-
 ### Friends List - View and manage friends
 
 Add friend:
@@ -172,11 +170,9 @@ Settle up with a friend:
 
 <img width="1511" alt="image" src="https://github.com/user-attachments/assets/0dfa1f17-b1fa-492e-a844-3fa0eadcb029" />
 
-
 ### Add Expense - Create a new expense and split with friends
 
 <img width="1511" alt="image" src="https://github.com/user-attachments/assets/9be3042e-7753-47a1-9e41-ebb7150f38b1" />
-
 
 ### Expense Details - View and manage specific expense
 
@@ -191,8 +187,6 @@ Edit a specific expense item:
 Delete a specific expense item:
 
 <img width="1511" alt="image" src="https://github.com/user-attachments/assets/e0a270de-73f4-4ca6-a156-8148a9024883" />
-
-
 
 ## Technology Stack:
 
