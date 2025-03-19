@@ -4,11 +4,15 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import debugPckg from "debug";
 import "dotenv/config";
 
 import friendsRouter from "./routes/friends.js";
 import expensesRouter from "./routes/expenses.js";
 
+const debug = debugPckg("express-mongodb-friends-expenses:backend");
+
+const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -23,14 +27,8 @@ app.use(express.static(path.join(__dirname, "frontend/dist")));
 app.use("/api/friends", friendsRouter);
 app.use("/api/expenses", expensesRouter);
 
-// Replace the current catch-all route
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
-});
-
-// Add a more specific non-API route handler
-app.get(/^(?!\/api\/).+$/, (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+app.listen(PORT, () => {
+  debug(`Backend is running on port ${PORT}`);
 });
 
 export default app;
