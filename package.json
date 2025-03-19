@@ -7,15 +7,13 @@
   "engines": {
     "node": "22.x"
   },
-  {
-    "scripts": {
-      "start": "node --watch ./app.js",
-      "debug": "DEBUG=express:* node --watch ./bin/www.js",
-      "postinstall": "cd frontend && npm install",
-      "build": "cd frontend && npm run build && cd ..",
-      "lint": "eslint . && prettier --check ."
-    }
-  }
+  "scripts": {
+    "start": "node --watch ./app.js",
+    "debug": "DEBUG=express:* node --watch ./bin/www.js",
+    "postinstall": "cd frontend && npm install",
+    "build": "cd frontend && npm run build && cd ..",
+    "lint": "eslint . && prettier --check ."
+  },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
