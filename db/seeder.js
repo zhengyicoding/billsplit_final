@@ -123,7 +123,7 @@ async function seedDatabase() {
     }
 
     // Calculate balances for each friend
-    for (const [friendId, friend] of friendsMap) {
+    for (const [friend] of friendsMap) {
       friend.balance = calculateBalance(friend.expenses);
       // Remove the temporary expenses array
       delete friend.expenses;

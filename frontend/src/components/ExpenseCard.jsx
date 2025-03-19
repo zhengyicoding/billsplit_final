@@ -101,7 +101,7 @@ function ExpenseCard({
               <span>{formatCurrency(userAmount)}</span>
             </div>
             <div className="split-row">
-              <span>{friendName}'s share:</span>
+              <span>{friendName}&apos;s share:</span>
               <span>{formatCurrency(friendAmount)}</span>
             </div>
             <div className={`balance-detail ${balance.type}`}>

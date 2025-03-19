@@ -68,7 +68,7 @@ function FriendForm({ onSubmit, initialData = null }) {
     try {
       new URL(string);
       return true;
-    } catch (_) {
+    } catch {
       return false;
     }
   };

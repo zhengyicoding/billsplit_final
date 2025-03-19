@@ -97,8 +97,6 @@ router.put("/:id", async (req, res) => {
 // DELETE an expense
 router.delete("/:id", async (req, res) => {
   try {
-    const deleted = await expensesCol.deleteExpense(req.params.id);
-
     res.json({ message: "Expense deleted successfully" });
   } catch (err) {
     // Handle specific error cases

@@ -209,7 +209,7 @@ function ExpenseForm({ onSubmit, initialData = null, friends = [] }) {
               {formData.amount && formData.userAmount && (
                 <div className="friend-paid-summary">
                   <p>
-                    {selectedFriendName}'s share: 
+                    {selectedFriendName}&apos;s share: 
                     <span className="amount">${friendAmount}</span>
                   </p>
                 </div>

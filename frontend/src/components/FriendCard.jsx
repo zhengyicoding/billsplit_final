@@ -12,12 +12,13 @@ function FriendCard({
   onSettle,
   compact = false
 }) {
+  const [imageError, setImageError] = useState(false);
   if (!friend) return null;
 
   const { _id, name, profilePic, avatar, balance } = friend;
   
   // Use either profilePic (new field) or avatar (old field) with fallback
-  const [imageError, setImageError] = useState(false);
+  
   const imageUrl = imageError ? 
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random` : 
     (profilePic || avatar);

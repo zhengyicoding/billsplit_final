@@ -28,47 +28,74 @@ function DashboardPage() {
   const [sortDirection, setSortDirection] = useState('asc');
   const [showAllFriends, setShowAllFriends] = useState(false);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    
-    const fetchDashboardData = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Pass the signal to fetch calls
-        const friendsResponse = await fetch('/api/friends', { signal });
-        if (!friendsResponse.ok) {
-          throw new Error('Failed to fetch friends');
-        }
-        const friendsData = await friendsResponse.json();
-        
-        const expensesResponse = await fetch('/api/expenses?limit=5', { signal });
-        if (!expensesResponse.ok) {
-          throw new Error('Failed to fetch expenses');
-        }
-        const expensesData = await expensesResponse.json();
-        
-        setFriends(friendsData);
-        setExpenses(expensesData.expenses || expensesData);
-        setIsLoading(false);
-      } catch (err) {
-        // Don't update state if this was an abort error
-        if (err.name !== 'AbortError') {
-          console.error('Error fetching dashboard data:', err);
-          setError(err.message || 'Failed to load dashboard data');
-          setIsLoading(false);
-        }
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      
+      const friendsResponse = await fetch('/api/friends');
+      if (!friendsResponse.ok) {
+        throw new Error('Failed to fetch friends');
       }
-    };
-    
-    fetchDashboardData();
-    
-    // Return cleanup function
-    return () => {
-      controller.abort();
-    };
-  }, []);
+      const friendsData = await friendsResponse.json();
+      
+      const expensesResponse = await fetch('/api/expenses?limit=5');
+      if (!expensesResponse.ok) {
+        throw new Error('Failed to fetch expenses');
+      }
+      const expensesData = await expensesResponse.json();
+      
+      setFriends(friendsData);
+      setExpenses(expensesData.expenses || expensesData);
+      setIsLoading(false);
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+      setError(err.message || 'Failed to load dashboard data');
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  
+  // Call the function with signal handling
+  const fetchWithSignal = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Pass the signal to fetch calls
+      const friendsResponse = await fetch('/api/friends', { signal });
+      if (!friendsResponse.ok) {
+        throw new Error('Failed to fetch friends');
+      }
+      const friendsData = await friendsResponse.json();
+      
+      const expensesResponse = await fetch('/api/expenses?limit=5', { signal });
+      if (!expensesResponse.ok) {
+        throw new Error('Failed to fetch expenses');
+      }
+      const expensesData = await expensesResponse.json();
+      
+      setFriends(friendsData);
+      setExpenses(expensesData.expenses || expensesData);
+      setIsLoading(false);
+    } catch (err) {
+      // Don't update state if this was an abort error
+      if (err.name !== 'AbortError') {
+        console.error('Error fetching dashboard data:', err);
+        setError(err.message || 'Failed to load dashboard data');
+        setIsLoading(false);
+      }
+    }
+  };
+  
+  fetchWithSignal();
+  
+  // Return cleanup function
+  return () => {
+    controller.abort();
+  };
+}, []);
 
   // Calculate the total balance (positive means friends owe you, negative means you owe)
   const calculateTotalBalance = () => {
@@ -287,7 +314,7 @@ function DashboardPage() {
             <div className="friends-preview">
               {friends.length === 0 ? (
                 <div className="empty-state">
-                  <p>You haven't added any friends yet.</p>
+                  <p>You haven&apos;t added any friends yet.</p>
                   <Button 
                     onClick={() => {
                       setEditingFriend(null);
