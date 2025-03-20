@@ -34,11 +34,13 @@ function ExpensesPage() {
   });
   const [sortField, setSortField] = useState('date');
   const [sortDirection, setSortDirection] = useState('desc');
+
   
-  // Fetch friends data
+ // Fetch friends data
 const fetchFriends = async (signal) => {
   try {
-    const response = await fetch('/api/friends', { signal });
+    const fetchOptions = signal ? { signal } : {};
+    const response = await fetch('/api/friends', fetchOptions);
     
     if (!response.ok) {
       throw new Error('Failed to fetch friends');
@@ -51,15 +53,13 @@ const fetchFriends = async (signal) => {
       console.error('Error fetching friends:', err);
       setError(err.message || 'Failed to load friends');
     }
-    throw err; // Re-throw so the calling function can catch it
+    throw err;
   }
 };
 
 // Fetch expenses data with pagination and filtering
 const fetchExpenses = async (page = pagination.currentPage, signal) => {
   try {
-    setIsLoading(true);
-    
     // Build query parameters
     const queryParams = new URLSearchParams({
       page,
@@ -75,7 +75,8 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
     if (filters.dateFrom) queryParams.append('dateFrom', filters.dateFrom);
     if (filters.dateTo) queryParams.append('dateTo', filters.dateTo);
     
-    const response = await fetch(`/api/expenses?${queryParams.toString()}`, { signal });
+    const fetchOptions = signal ? { signal } : {};
+    const response = await fetch(`/api/expenses?${queryParams.toString()}`, fetchOptions);
     
     if (!response.ok) {
       throw new Error('Failed to fetch expenses');
@@ -83,11 +84,10 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
     
     const data = await response.json();
     
-    // Check if the response has the new format with pagination info
+    // Handle the response consistently
     if (data.expenses && data.pagination) {
       setExpenses(data.expenses);
       setPagination({
-        ...pagination,
         currentPage: data.pagination.page,
         totalPages: data.pagination.pages,
         totalItems: data.pagination.total,
@@ -97,10 +97,10 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
       // Fallback for old format (just an array of expenses)
       setExpenses(data);
       setPagination({
-        ...pagination,
         currentPage: page,
         totalPages: 1,
-        totalItems: data.length || 0
+        totalItems: data.length,
+        itemsPerPage: pagination.itemsPerPage
       });
     }
     
@@ -111,129 +111,144 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
       setError(err.message || 'Failed to load expenses');
       setIsLoading(false);
     }
-    throw err; // Re-throw so the calling function can catch it
+    throw err;
   }
 };
       
-
+// Create a single loadData function to handle all data fetching
+const loadData = async (page = 1, signal = null) => {
+  try {
+    setIsLoading(true);
+    
+    // For initial load or if friends array is empty, fetch friends first
+    if (friends.length === 0) {
+      try {
+        await fetchFriends(signal);
+      } catch (err) {
+        // Continue even if friends fetch fails - we still want to try loading expenses
+        if (err.name !== 'AbortError') {
+          console.error('Error fetching friends:', err);
+        }
+      }
+    }
+    
+    await fetchExpenses(page, signal);
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.error('Error loading data:', err);
+    }
+  }
+};
   
-  // Load initial data
+  
+ // Separate useEffect for filter/sort changes
 useEffect(() => {
+  // Skip the initial render
+  if (isLoading) return;
+  
   const controller = new AbortController();
   const signal = controller.signal;
   
-  const loadData = async () => {
-    try {
-      // Modify fetchFriends and fetchExpenses to accept signal parameter
-      await fetchFriends(signal);
-      await fetchExpenses(1, signal);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        console.error('Error loading initial data:', err);
-      }
-    }
-  };
-  
-  loadData();
-  
-  return () => {
-    controller.abort();
-  };
-}, []);
-
-// Refetch when filters, sort, or search changes
-useEffect(() => {
-  const controller = new AbortController();
-  const signal = controller.signal;
-  
-  const loadFilteredData = async () => {
-    try {
-      await fetchExpenses(1, signal);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        console.error('Error loading filtered data:', err);
-      }
-    }
-  };
-  
-  loadFilteredData();
+  // When filters change, always go back to page 1
+  loadData(1, signal);
   
   return () => {
     controller.abort();
   };
 }, [filters, sortField, sortDirection, searchTerm]);
 
+// Initial data load on mount - keep this separate
+useEffect(() => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  
+  loadData(1, signal);
+  
+  return () => {
+    controller.abort();
+  };
+}, []); // Empty dependency array - only runs once on mount
+
   // Handle adding a new expense
-  const handleAddExpense = async (expenseData) => {
-    try {
-      const response = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(expenseData),
-      });
+const handleAddExpense = async (expenseData) => {
+  try {
+    const response = await fetch('/api/expenses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expenseData),
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to add expense');
-      }
-
-      // Refresh expenses after adding
-      await fetchExpenses(1);
-      setShowModal(false);
-    } catch (err) {
-      console.error('Error adding expense:', err);
-      setError(err.message || 'Failed to add expense');
+    if (!response.ok) {
+      throw new Error('Failed to add expense');
     }
-  };
 
-  // Handle updating an expense
-  const handleUpdateExpense = async (expenseData) => {
-    try {
-      const response = await fetch(`/api/expenses/${editingExpense._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(expenseData),
-      });
+    // Refresh expenses after adding - go back to page 1
+    await loadData(1);
+    setShowModal(false);
+  } catch (err) {
+    console.error('Error adding expense:', err);
+    setError(err.message || 'Failed to add expense');
+  }
+};
 
-      if (!response.ok) {
-        throw new Error('Failed to update expense');
-      }
+// Handle updating an expense
+const handleUpdateExpense = async (expenseData) => {
+  try {
+    const response = await fetch(`/api/expenses/${editingExpense._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expenseData),
+    });
 
-      // Refresh expenses after updating
-      await fetchExpenses(pagination.currentPage);
-      setEditingExpense(null);
-      setShowModal(false);
-    } catch (err) {
-      console.error('Error updating expense:', err);
-      setError(err.message || 'Failed to update expense');
+    if (!response.ok) {
+      throw new Error('Failed to update expense');
     }
-  };
 
-  // Handle deleting an expense
-  const handleDeleteExpense = async (expenseId) => {
-    if (!window.confirm('Are you sure you want to delete this expense?')) {
-      return;
+    // Refresh expenses after updating - stay on current page
+    await loadData(pagination.currentPage);
+    setEditingExpense(null);
+    setShowModal(false);
+  } catch (err) {
+    console.error('Error updating expense:', err);
+    setError(err.message || 'Failed to update expense');
+  }
+};
+
+// Handle deleting an expense
+const handleDeleteExpense = async (expenseId) => {
+  if (!window.confirm('Are you sure you want to delete this expense?')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/expenses/${expenseId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete expense');
     }
+
+    // Refresh expenses after deleting - stay on current page
+    // Unless we're on the last page and deleted the last item, then go to previous page
+    const currentPage = pagination.currentPage;
+    const isLastItemOnPage = expenses.length === 1;
+    const isLastPage = pagination.currentPage === pagination.totalPages;
     
-    try {
-      const response = await fetch(`/api/expenses/${expenseId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete expense');
-      }
-
-      // Refresh expenses after deleting
-      await fetchExpenses(pagination.currentPage);
-    } catch (err) {
-      console.error('Error deleting expense:', err);
-      setError(err.message || 'Failed to delete expense');
+    if (isLastItemOnPage && isLastPage && pagination.currentPage > 1) {
+      await loadData(pagination.currentPage - 1);
+    } else {
+      await loadData(currentPage);
     }
-  };
+  } catch (err) {
+    console.error('Error deleting expense:', err);
+    setError(err.message || 'Failed to delete expense');
+  }
+};
   
   // Form submission handler
   const handleSubmit = (formData) => {
@@ -302,7 +317,7 @@ useEffect(() => {
           expenses={expenses}
           pagination={pagination}
           getFriendName={getFriendName}
-          onPageChange={fetchExpenses}
+          onPageChange={(page)=> loadData(page)}
           onEdit={(expense) => {
             setEditingExpense(expense);
             setShowModal(true);

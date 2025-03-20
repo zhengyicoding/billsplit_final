@@ -28,49 +28,20 @@ function DashboardPage() {
   const [sortDirection, setSortDirection] = useState('asc');
   const [showAllFriends, setShowAllFriends] = useState(false);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (signal = null) => {
     try {
       setIsLoading(true);
       
-      const friendsResponse = await fetch('/api/friends');
+      // Create fetch options object, conditionally adding signal if provided
+      const fetchOptions = signal ? { signal } : {};
+      
+      const friendsResponse = await fetch('/api/friends', fetchOptions);
       if (!friendsResponse.ok) {
         throw new Error('Failed to fetch friends');
       }
       const friendsData = await friendsResponse.json();
       
-      const expensesResponse = await fetch('/api/expenses?limit=5');
-      if (!expensesResponse.ok) {
-        throw new Error('Failed to fetch expenses');
-      }
-      const expensesData = await expensesResponse.json();
-      
-      setFriends(friendsData);
-      setExpenses(expensesData.expenses || expensesData);
-      setIsLoading(false);
-    } catch (err) {
-      console.error('Error fetching dashboard data:', err);
-      setError(err.message || 'Failed to load dashboard data');
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-  const controller = new AbortController();
-  const signal = controller.signal;
-  
-  // Call the function with signal handling
-  const fetchWithSignal = async () => {
-    try {
-      setIsLoading(true);
-      
-      // Pass the signal to fetch calls
-      const friendsResponse = await fetch('/api/friends', { signal });
-      if (!friendsResponse.ok) {
-        throw new Error('Failed to fetch friends');
-      }
-      const friendsData = await friendsResponse.json();
-      
-      const expensesResponse = await fetch('/api/expenses?limit=5', { signal });
+      const expensesResponse = await fetch('/api/expenses?limit=5', fetchOptions);
       if (!expensesResponse.ok) {
         throw new Error('Failed to fetch expenses');
       }
@@ -88,14 +59,18 @@ function DashboardPage() {
       }
     }
   };
-  
-  fetchWithSignal();
-  
-  // Return cleanup function
-  return () => {
-    controller.abort();
-  };
-}, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    
+    // Call the fetchDashboardData function with the abort signal
+    fetchDashboardData(controller.signal);
+    
+    // Return cleanup function
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   // Calculate the total balance (positive means friends owe you, negative means you owe)
   const calculateTotalBalance = () => {
