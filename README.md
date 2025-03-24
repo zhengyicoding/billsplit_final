@@ -201,7 +201,7 @@ Delete a specific expense item:
 
 [Slides](https://docs.google.com/presentation/d/1dzMs63gO8veD8iX67uC0WgvGpZF5QL06qQMJLcL_82M/edit?usp=sharing)
 
-[Video Demo](https://youtu.be/example)
+[Video Demo](https://youtu.be/aM9q7ZpVgPE)
 
 ## Future Improvements
 
@@ -223,6 +223,14 @@ Prompt: Debugging MongoDB Atlas connection errors
 ### Use case: Profile picture implementation
 
 Prompt: Add input area to put in friend profile pic, if no profile pic, database will generate one automatically
+
+### Use case: Bug in filter function for expenses items
+
+Prompt: Whenever I input in search box and backspace, the search function stops working and trap in loading status. What are potential reasons and how to fix it?
+
+## Refactor React components
+
+Prompt: Please help me to split and refactor React components to make the code more maintainable
 
 ## License
 
