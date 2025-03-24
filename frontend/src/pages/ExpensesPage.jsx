@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import ExpenseForm from '../components/ExpenseForm';
@@ -8,6 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import './ExpensesPage.css';
 
 function ExpensesPage() {
+  const activeRequestRef = useRef(null);
   // State for expenses data
   const [expenses, setExpenses] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -60,6 +61,15 @@ const fetchFriends = async (signal) => {
 // Fetch expenses data with pagination and filtering
 const fetchExpenses = async (page = pagination.currentPage, signal) => {
   try {
+    // Cancel any ongoing request
+    if (activeRequestRef.current) {
+      activeRequestRef.current.abort();
+    }
+    
+    // Create a new controller and store it
+    const controller = new AbortController();
+    activeRequestRef.current = controller;
+    
     // Build query parameters
     const queryParams = new URLSearchParams({
       page,
@@ -75,8 +85,9 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
     if (filters.dateFrom) queryParams.append('dateFrom', filters.dateFrom);
     if (filters.dateTo) queryParams.append('dateTo', filters.dateTo);
     
-    const fetchOptions = signal ? { signal } : {};
-    const response = await fetch(`/api/expenses?${queryParams.toString()}`, fetchOptions);
+    const response = await fetch(`/api/expenses?${queryParams.toString()}`, {
+      signal: controller.signal
+    });
     
     if (!response.ok) {
       throw new Error('Failed to fetch expenses');
@@ -84,34 +95,36 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
     
     const data = await response.json();
     
-    // Handle the response consistently
-    if (data.expenses && data.pagination) {
-      setExpenses(data.expenses);
-      setPagination({
-        currentPage: data.pagination.page,
-        totalPages: data.pagination.pages,
-        totalItems: data.pagination.total,
-        itemsPerPage: data.pagination.limit
-      });
-    } else {
-      // Fallback for old format (just an array of expenses)
-      setExpenses(data);
-      setPagination({
-        currentPage: page,
-        totalPages: 1,
-        totalItems: data.length,
-        itemsPerPage: pagination.itemsPerPage
-      });
+    // Only update state if this controller is still active
+    if (activeRequestRef.current === controller) {
+      // Handle the response consistently
+      if (data.expenses && data.pagination) {
+        setExpenses(data.expenses);
+        setPagination({
+          currentPage: data.pagination.page,
+          totalPages: data.pagination.pages,
+          totalItems: data.pagination.total,
+          itemsPerPage: data.pagination.limit
+        });
+      } else {
+        // Fallback for old format (just an array of expenses)
+        setExpenses(data);
+        setPagination({
+          currentPage: page,
+          totalPages: 1,
+          totalItems: data.length,
+          itemsPerPage: pagination.itemsPerPage
+        });
+      }
+      
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   } catch (err) {
-    if (err.name !== 'AbortError') {
+    if (err.name !== 'AbortError' && activeRequestRef.current) {
       console.error('Error fetching expenses:', err);
       setError(err.message || 'Failed to load expenses');
       setIsLoading(false);
     }
-    throw err;
   }
 };
       
@@ -119,6 +132,11 @@ const fetchExpenses = async (page = pagination.currentPage, signal) => {
 const loadData = async (page = 1, signal = null) => {
   try {
     setIsLoading(true);
+    
+    // Add safety timeout to ensure loading state gets reset
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000); // 5 seconds timeout
     
     // For initial load or if friends array is empty, fetch friends first
     if (friends.length === 0) {
@@ -133,9 +151,13 @@ const loadData = async (page = 1, signal = null) => {
     }
     
     await fetchExpenses(page, signal);
+    
+    // Clear the safety timeout if request completed successfully
+    clearTimeout(timeoutId);
   } catch (err) {
     if (err.name !== 'AbortError') {
       console.error('Error loading data:', err);
+      setIsLoading(false);
     }
   }
 };
@@ -275,6 +297,16 @@ const handleDeleteExpense = async (expenseId) => {
     });
     setSearchTerm('');
   };
+
+// Handle filter change
+const handleSearchChange = (value) => {
+  setSearchTerm(value);
+  
+  // If search is cleared, immediately reset loading state
+  if (!value || value.trim() === '') {
+    setIsLoading(false);
+  }
+};
   
   // Handle sort change
   const handleSortChange = (field, direction) => {
@@ -300,7 +332,7 @@ const handleDeleteExpense = async (expenseId) => {
       
       <ExpenseFilters 
         searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchChange={handleSearchChange}
         filters={filters}
         onFilterChange={setFilters}
         sortField={sortField}
