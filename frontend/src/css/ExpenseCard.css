@@ -9,7 +9,8 @@
 }
 
 .expense-card.settled {
-    opacity: 0.7;
+    opacity: 0.9;
+    background-color: rgba(129, 199, 132, 0.05);
 }
 
 .expense-summary {
@@ -27,11 +28,15 @@
     margin: 0;
     font-size: 18px;
     color: #333;
+    max-width: calc(100% - 120px);
+    /* Reserve space for amount and settled badge */
 }
 
 .expense-amount {
     font-weight: 600;
     font-size: 18px;
+    margin-right: 70px;
+    /* Make room for the settled badge */
 }
 
 .expense-meta {
@@ -50,8 +55,8 @@
 
 .settled-badge {
     display: inline-block;
-    background-color: #e8f5e9;
-    color: #388e3c;
+    background-color: #81C784;
+    color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -87,12 +92,12 @@
 }
 
 .balance-detail.positive {
-    background-color: #e8f5e9;
+    background-color: rgba(129, 199, 132, 0.1);
     color: #388e3c;
 }
 
 .balance-detail.negative {
-    background-color: #ffebee;
+    background-color: rgba(229, 115, 115, 0.1);
     color: #d32f2f;
 }
 
@@ -101,7 +106,7 @@
     justify-content: space-between;
     padding: 10px;
     border-radius: 4px;
-    background-color: #e8f5e9;
+    background-color: rgba(129, 199, 132, 0.1);
     color: #388e3c;
     margin-top: 12px;
     font-size: 14px;
@@ -115,13 +120,13 @@
 }
 
 .expense-card:focus {
-    outline: 2px solid #3B82F6;
-    /* Main teal/blue color */
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    outline: 2px solid #4E54C8;
+    /* Updated to primary color */
+    box-shadow: 0 0 0 2px rgba(78, 84, 200, 0.3);
 }
 
 .expense-card:focus-visible {
-    background-color: rgba(59, 130, 246, 0.05);
+    background-color: rgba(78, 84, 200, 0.05);
 }
 
 /* Optional hint that shows on focus */
@@ -145,4 +150,17 @@
 
 .expense-card:focus:hover::after {
     opacity: 1;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    .expense-header h3 {
+        max-width: calc(100% - 100px);
+        /* Slightly smaller on mobile */
+    }
+
+    .expense-amount {
+        margin-right: 60px;
+        /* Slightly smaller on mobile */
+    }
 }
