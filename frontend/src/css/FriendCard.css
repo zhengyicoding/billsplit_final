@@ -47,11 +47,11 @@
 }
 
 .friend-balance.positive {
-    color: #4CAF50;
+    color: #2E7D32;
 }
 
 .friend-balance.negative {
-    color: #F44336;
+    color: #C62828;
 }
 
 .friend-balance.neutral {

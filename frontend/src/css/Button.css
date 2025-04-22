@@ -80,30 +80,33 @@
 
 /* Delete button - More subtle styling but still indicates caution */
 .btn-danger {
-    color: #E57373;
-    background-color: rgba(229, 115, 115, 0.1);
-    border-color: transparent;
+    /* Change from light red text on light background */
+    color: white;
+    /* White text */
+    background-color: #D32F2F;
+    /* Darker red background */
+    border-color: #D32F2F;
 }
 
 .btn-danger:hover,
 .btn-danger:focus {
-    color: white;
-    background-color: #E57373;
-    border-color: #E57373;
+    background-color: #B71C1C;
+    border-color: #B71C1C;
 }
 
 /* Settle button - More subtle styling */
+/* Fix the Settle Up button contrast */
 .btn-warning {
-    color: #81C784;
-    background-color: rgba(78, 84, 200, 0.1);
-    border-color: transparent;
+    /* Change from light green text on light background */
+    color: #333;
+    /* Dark text */
+    background-color: #FFC107;
+    /* Proper yellow warning color */
 }
 
 .btn-warning:hover,
 .btn-warning:focus {
-    color: white;
-    background-color: #81C784;
-    border-color: #81C784;
+    background-color: #FFA000;
 }
 
 /* For special cases where you want more emphasis */

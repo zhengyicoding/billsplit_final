@@ -101,8 +101,9 @@ The app will be available at `http://localhost:5173/` and the server will run on
 
 Primary: #4E54C8
 Secondary/Edit: #8F94FB
-Danger/Delete: #E57373
-Success/Settle: #81C784
+Danger/Delete: #D32F2F
+Warning/Settle: #FFC107
+Success/Settled: #81C784
 
 ## Font Paring:
 
