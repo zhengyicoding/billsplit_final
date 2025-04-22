@@ -17,7 +17,7 @@ Instructor: John Alexis Guerra Gómez [Profile](https://johnguerra.co/)
 
 ### Option 1: Live Demo
 
-[BillSplit App](https://billsplit-git-main-zhengyis-projects.vercel.app)
+[BillSplit App](https://billsplit-zhengyicoding-zhengyis-projects.vercel.app/)
 
 ### Option 2: Run locally
 
