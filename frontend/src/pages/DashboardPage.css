@@ -64,14 +64,6 @@
     margin: 0;
 }
 
-.toggle-view-button {
-    background: none;
-    border: none;
-    color: #2196F3;
-    font-weight: 800;
-    cursor: pointer;
-    font-size: 14px;
-}
 
 .toggle-view-button:hover {
     text-decoration: underline;

@@ -1,21 +1,32 @@
 .navbar {
-    background-color: #2196F3;
+    background-color: white;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 64px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #4E54C8;
 }
 
 .navbar-brand {
     font-size: 24px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-brand a {
-    color: white;
+    color: #4E54C8;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    height: 36px;
+    width: 36px;
+    margin-right: 10px;
 }
 
 .nav-links {
@@ -27,23 +38,51 @@
 
 .nav-links li {
     margin-left: 20px;
+    position: relative;
 }
 
 .nav-links a {
-    color: white;
+    color: #4E54C8;
     text-decoration: none;
     padding: 20px 10px;
     display: inline-block;
     font-weight: 500;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(78, 84, 200, 0.05);
+}
+
+/* Improve active state visualization */
+.nav-links li.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background-color: #4E54C8;
 }
 
 .nav-links li.active a {
-    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    color: #4E54C8;
+}
+
+/* Style for both nav links consistently */
+.nav-links li a {
+    border-radius: 4px;
+}
+
+/* Special styling for Expenses link but keep it in the navbar */
+.expenses-link a {
+    color: #4E54C8;
+    font-weight: 600;
+}
+
+.expenses-link.active a {
+    color: #4E54C8;
 }
 
 @media (max-width: 768px) {
@@ -53,6 +92,12 @@
 
     .navbar-brand {
         font-size: 20px;
+    }
+
+    .navbar-logo {
+        height: 28px;
+        width: 28px;
+        margin-right: 6px;
     }
 
     .nav-links li {

@@ -18,7 +18,7 @@ function RecentExpenses({
     <div className="recent-expenses">
       <div className="section-header">
         <h2>Recent Expenses</h2>
-        <Link to="/expenses" className="view-all-link">View All</Link>
+        <Link to="/expenses" className="btn btn-primary">View All Expenses</Link>
       </div>
       
       {expenses.length === 0 ? (

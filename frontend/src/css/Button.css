@@ -39,51 +39,88 @@
     font-size: 18px;
 }
 
-/* Button variants */
+/* Primary button - Use for main actions (Add Friend) */
 .btn-primary {
     color: #fff;
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+    background-color: #4E54C8;
+    border-color: #4E54C8;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: #388E3C;
-    border-color: #388E3C;
+    background-color: #3A3F96;
+    border-color: #3A3F96;
 }
 
+/* Secondary button - Use for less important actions */
 .btn-secondary {
-    color: #333;
-    background-color: #f8f9fa;
-    border-color: #ddd;
+    color: #4E54C8;
+    background-color: rgba(78, 84, 200, 0.1);
+    border-color: transparent;
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-    background-color: #e9ecef;
-    border-color: #ccc;
+    background-color: rgba(78, 84, 200, 0.2);
+    border-color: transparent;
 }
 
+/* Edit button - More subtle styling */
+.btn-edit {
+    color: #4E54C8;
+    background-color: rgba(78, 84, 200, 0.1);
+    border-color: transparent;
+}
+
+.btn-edit:hover,
+.btn-edit:focus {
+    background-color: rgba(78, 84, 200, 0.2);
+    border-color: transparent;
+}
+
+/* Delete button - More subtle styling but still indicates caution */
 .btn-danger {
-    color: #fff;
-    background-color: #F44336;
-    border-color: #F44336;
+    color: #E57373;
+    background-color: rgba(229, 115, 115, 0.1);
+    border-color: transparent;
 }
 
 .btn-danger:hover,
 .btn-danger:focus {
-    background-color: #D32F2F;
-    border-color: #D32F2F;
+    color: white;
+    background-color: #E57373;
+    border-color: #E57373;
 }
 
+/* Settle button - More subtle styling */
 .btn-warning {
-    color: #fff;
-    background-color: #FF9800;
-    border-color: #FF9800;
+    color: #81C784;
+    background-color: rgba(78, 84, 200, 0.1);
+    border-color: transparent;
 }
 
 .btn-warning:hover,
 .btn-warning:focus {
-    background-color: #F57C00;
-    border-color: #F57C00;
+    color: white;
+    background-color: #81C784;
+    border-color: #81C784;
+}
+
+/* For special cases where you want more emphasis */
+.btn-primary-filled {
+    color: #fff;
+    background-color: #4E54C8;
+    border-color: #4E54C8;
+}
+
+.btn-danger-filled {
+    color: #fff;
+    background-color: #E57373;
+    border-color: #E57373;
+}
+
+.btn-warning-filled {
+    color: #fff;
+    background-color: #81C784;
+    border-color: #81C784;
 }

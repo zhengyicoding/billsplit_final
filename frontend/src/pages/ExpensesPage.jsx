@@ -59,7 +59,7 @@ const fetchFriends = async (signal) => {
 };
 
 // Fetch expenses data with pagination and filtering
-const fetchExpenses = async (page = pagination.currentPage, signal) => {
+const fetchExpenses = async (page = pagination.currentPage) => {
   try {
     // Cancel any ongoing request
     if (activeRequestRef.current) {

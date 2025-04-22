@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Card from './Card';
 import Button from './Button';
 import { formatCurrency, formatDate } from '../utils/formatters';
@@ -13,6 +13,7 @@ function ExpenseCard({
   compact = false
 }) {
   const [expanded, setExpanded] = useState(false);
+  const cardRef = useRef(null);
   
   if (!expense) return null;
 
@@ -48,11 +49,27 @@ function ExpenseCard({
   };
 
   const balance = calculateBalance();
+  
+  // Handle keyboard events
+  const handleKeyDown = (e) => {
+    // Only handle Enter/Space for expanding/collapsing
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setExpanded(!expanded);
+    }
+  };
 
   // Compact version for dashboard and overview sections
   if (compact) {
     return (
-      <Card className={`expense-card compact ${settled ? 'settled' : ''}`}>
+      <Card 
+        className={`expense-card compact ${settled ? 'settled' : ''}`}
+        tabIndex="0"
+        ref={cardRef}
+        onKeyDown={handleKeyDown}
+        role="button"
+        aria-label={`Expense ${description} with ${friendName} for ${formatCurrency(amount)}`}
+      >
         <div className="expense-summary">
           <div className="expense-header">
             <h3>{description}</h3>
@@ -73,6 +90,12 @@ function ExpenseCard({
     <Card 
       className={`expense-card ${settled ? 'settled' : ''}`}
       onClick={() => setExpanded(!expanded)}
+      tabIndex="0"
+      ref={cardRef}
+      onKeyDown={handleKeyDown}
+      role="button"
+      aria-expanded={expanded}
+      aria-label={`Expense ${description} with ${friendName} for ${formatCurrency(amount)}`}
     >
       <div className="expense-summary">
         <div className="expense-header">
@@ -138,6 +161,7 @@ function ExpenseCard({
     </Card>
   );
 }
+
 ExpenseCard.propTypes = {
   expense: PropTypes.shape({
     _id: PropTypes.string.isRequired,

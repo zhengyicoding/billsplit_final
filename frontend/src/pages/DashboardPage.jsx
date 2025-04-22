@@ -3,7 +3,6 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import FriendCard from '../components/FriendCard';
 import FriendsList from '../components/FriendsList';
 import FriendForm from '../components/FriendForm';
 import FriendFilters from '../components/FriendFilters';
@@ -26,7 +25,6 @@ function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
-  const [showAllFriends, setShowAllFriends] = useState(false);
 
   const fetchDashboardData = async (signal = null) => {
     try {
@@ -229,14 +227,6 @@ function DashboardPage() {
     <div className="page">
       <div className="page-header">
         <h1>Dashboard</h1>
-        <Button 
-          onClick={() => {
-            setEditingFriend(null);
-            setShowModal(true);
-          }}
-        >
-          Add Friend
-        </Button>
       </div>
 
       <Card className={`balance-card ${balanceClass}`}>
@@ -253,24 +243,40 @@ function DashboardPage() {
         <div className="friends-section">
           <div className="section-header">
             <h2>Friends</h2>
-            <button 
-              className="toggle-view-button"
-              onClick={() => setShowAllFriends(!showAllFriends)}
-            >
-              {showAllFriends ? 'Show Summary' : 'Show All'}
-            </button>
+            <Button 
+            className="btn-primary"
+            onClick={() => {
+            setEditingFriend(null);
+            setShowModal(true);
+          }}
+        >
+          Add Friend
+        </Button>
           </div>
           
-          {showAllFriends ? (
-            <div className="full-friends-view">
-              <FriendFilters 
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                sortField={sortField}
-                sortDirection={sortDirection}
-                onSortChange={handleSortChange}
-              />
-              
+          <div className="full-friends-view">
+            <FriendFilters 
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSortChange={handleSortChange}
+            />
+            
+            {friends.length === 0 ? (
+              <div className="empty-state">
+                <p>You haven&apos;t added any friends yet.</p>
+                <Button 
+                  className="btn-primary"
+                  onClick={() => {
+                    setEditingFriend(null);
+                    setShowModal(true);
+                  }}
+                >
+                  Add Your First Friend
+                </Button>
+              </div>
+            ) : (
               <FriendsList 
                 friends={filteredAndSortedFriends}
                 onEdit={(friend) => {
@@ -279,53 +285,9 @@ function DashboardPage() {
                 }}
                 onDelete={handleDeleteFriend}
                 onSettle={setSettlingFriend}
-                onAddNew={() => {
-                  setEditingFriend(null);
-                  setShowModal(true);
-                }}
               />
-            </div>
-          ) : (
-            <div className="friends-preview">
-              {friends.length === 0 ? (
-                <div className="empty-state">
-                  <p>You haven&apos;t added any friends yet.</p>
-                  <Button 
-                    onClick={() => {
-                      setEditingFriend(null);
-                      setShowModal(true);
-                    }}
-                  >
-                    Add Your First Friend
-                  </Button>
-                </div>
-              ) : (
-                friends.slice(0, 3).map(friend => (
-                  <FriendCard
-                    key={friend._id}
-                    friend={friend}
-                    onEdit={(friend) => {
-                      setEditingFriend(friend);
-                      setShowModal(true);
-                    }}
-                    onDelete={handleDeleteFriend}
-                    onSettle={setSettlingFriend}
-                  />
-                ))
-              )}
-              
-              {friends.length > 3 && (
-                <div className="view-more">
-                  <Button 
-                    variant="secondary"
-                    onClick={() => setShowAllFriends(true)}
-                  >
-                    View All ({friends.length}) Friends
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <RecentExpenses 

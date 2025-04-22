@@ -97,6 +97,19 @@ npm start
 
 The app will be available at `http://localhost:5173/` and the server will run on `http://localhost:3000/`.
 
+## Color Palette
+
+Primary: #4E54C8
+Secondary/Edit: #8F94FB
+Danger/Delete: #E57373
+Success/Settle: #81C784
+
+## Font Paring:
+
+Primary Font: Inter. Used for headings, navigation, and buttons.
+
+Secondary Font: Manrope. Used for body text, balances, and descriptive content.
+
 ## Features
 
 - **Friend Management**: Add, edit, and delete friends
