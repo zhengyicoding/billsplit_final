@@ -100,10 +100,17 @@ The app will be available at `http://localhost:5173/` and the server will run on
 ## Color Palette
 
 Primary: #4E54C8
+
 Secondary/Edit: #8F94FB
+
 Danger/Delete: #D32F2F
+
 Warning/Settle: #FFC107
+
 Success/Settled: #81C784
+
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/a17a318a-e8bf-41a2-bc77-d1da20b7f729" />
+<img width="698" alt="image" src="https://github.com/user-attachments/assets/0e1398f4-ec02-47c8-ab93-6865fef65b97" />
 
 ## Font Paring:
 
@@ -162,49 +169,60 @@ Collection 2: **expenses** - Records expense details and split information
 
 ### Dashboard - Overview of balances, friends list and recent expenses
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/66dfa82c-f7cc-4f8c-aef9-2196aeac397e" />
+<img width="1486" alt="image" src="https://github.com/user-attachments/assets/cde6bc31-c564-4fbd-80d2-a31d2aecfec0" />
+
 
 ### Friends List - View and manage friends
 
 Add friend:
 
-<img width="1511" alt="image" src="https://github.com/user-attachments/assets/7106fc91-6725-4ed4-9918-2cc713df9190" />
+<img width="1478" alt="image" src="https://github.com/user-attachments/assets/1fc12c25-7175-481a-88a6-8677f4d572ef" />
+
 
 Edit friend:
 
-<img width="1508" alt="image" src="https://github.com/user-attachments/assets/b6d46a66-e7ac-4050-82e1-96f2f70d7bfd" />
+<img width="1483" alt="image" src="https://github.com/user-attachments/assets/323dd3c8-71f6-49b2-a4b2-be5f5c0ca621" />
+
 
 Delete friend:
 
-<img width="1510" alt="image" src="https://github.com/user-attachments/assets/c2097e71-01db-44ed-b0f7-52fc5f97b5de" />
+<img width="1491" alt="image" src="https://github.com/user-attachments/assets/a84d8686-3f31-450b-9167-8a7a88c75fc2" />
+
 
 Settle up with a friend:
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/283b08c8-6ceb-4ac1-9c7c-774d7eeb1efb" />
+<img width="1479" alt="image" src="https://github.com/user-attachments/assets/7158c80f-0f36-4fd0-846d-fcc887f46194" />
+
 
 ### Expense page - view all and filter/sort expense items with pagination
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/4737746e-5a59-4369-926d-83afad578aeb" />
+<img width="1486" alt="image" src="https://github.com/user-attachments/assets/7ea3433c-ff57-4c3e-bc05-9ba5dc59e3d9" />
 
-<img width="1511" alt="image" src="https://github.com/user-attachments/assets/0dfa1f17-b1fa-492e-a844-3fa0eadcb029" />
+
+<img width="1489" alt="image" src="https://github.com/user-attachments/assets/f0472d60-4c97-47a2-8ef9-e244f93712c6" />
+
 
 ### Add Expense - Create a new expense and split with friends
 
-<img width="1511" alt="image" src="https://github.com/user-attachments/assets/9be3042e-7753-47a1-9e41-ebb7150f38b1" />
+<img width="1496" alt="image" src="https://github.com/user-attachments/assets/713375c7-5b7f-4436-bbc9-ad77783d4308" />
+
 
 ### Expense Details - View and manage specific expense
 
 View a specific expense item:
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/6120af08-2938-4000-ab3b-dcf04c074ad7" />
+<img width="1485" alt="image" src="https://github.com/user-attachments/assets/fe168267-20f8-4af2-b010-97abf8e2d37a" />
+
 
 Edit a specific expense item:
 
-<img width="1511" alt="image" src="https://github.com/user-attachments/assets/1ba44f5a-0e6e-4ecd-8a15-4b721ef73c20" />
+<img width="1475" alt="image" src="https://github.com/user-attachments/assets/c65f5742-0c0a-47cb-ad7b-7d4a7afb0dcd" />
+
 
 Delete a specific expense item:
 
-<img width="1511" alt="image" src="https://github.com/user-attachments/assets/e0a270de-73f4-4ca6-a156-8148a9024883" />
+<img width="1491" alt="image" src="https://github.com/user-attachments/assets/a10630da-8863-4890-9a52-c25d1d9419e9" />
+
 
 ## Technology Stack:
 
