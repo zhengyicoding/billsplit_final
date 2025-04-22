@@ -111,6 +111,10 @@ Primary Font: Inter. Used for headings, navigation, and buttons.
 
 Secondary Font: Manrope. Used for body text, balances, and descriptive content.
 
+## Usability Study:
+
+[Usability Study Report Link](https://github.com/zhengyicoding/billsplit_final/blob/main/Design_Usability/Usability%20Study%20Report.pdf)
+
 ## Features
 
 - **Friend Management**: Add, edit, and delete friends
